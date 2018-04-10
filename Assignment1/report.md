@@ -6,7 +6,6 @@ fontsize: 11pt
 ---
 
 # Linear Regression
-
 1. The learned weight vector of the test data is:
 
             [3.95843212e+01  -1.01137046e-01   4.58935299e-02  -2.73038670e-03
@@ -36,3 +35,9 @@ Test Dataset ASE: 22.6382562966
 
 3. Training Dataset ASE (Without Dummy): 24.4758827846 \
    Test Dataset ASE (Without Dummy): 24.2922381757
+
+   The reason the dummy variable improves the accuracy of the optimal weight vector is because it provides the y intercept (or b) for the regression.
+
+4. The addition of random features increases the accuracy of the regression when applying it to the training data, but also decreases the accuracy of the regression when applied to other data. Adding more features leads to worse performance when it comes to applying the learned weight vector to other datasets. This is because the addition of features allows the weight vector to be trained more precisely, but it comes at the expense of overfitting the regression to the specific case of the training data.
+
+    ![Plot of ASEs](./img/ASE_plot.png)
