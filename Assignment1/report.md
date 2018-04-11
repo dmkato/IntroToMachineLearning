@@ -41,3 +41,6 @@ Test Dataset ASE: 22.6382562966
 4. The addition of random features increases the accuracy of the regression when applying it to the training data, but also decreases the accuracy of the regression when applied to other data. Adding more features leads to worse performance when it comes to applying the learned weight vector to other datasets. This is because the addition of features allows the weight vector to be trained more precisely, but it comes at the expense of overfitting the regression to the specific case of the training data.
 
     ![Plot of ASEs](./img/ASE_plot.png)
+
+5.
+    ![Plot of Batch Accuracys](./img/Batch_Accuracy_Plot.png)

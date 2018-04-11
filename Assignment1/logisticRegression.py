@@ -36,34 +36,42 @@ def batch_train(X, Y, w):
     w = np.subtract(w, n * d)
     return d, w
 
-def train():
-    X, Y = get_data('train')
-    w = np.zeros(X.shape[1])
-    eps = 4
-    d = eps + 1
-    i = 0
-    while np.linalg.norm(d) > eps:
-        i += 1
-        print("Batch {}".format(i))
-        d, w = batch_train(X, Y, w)
-        print("delta norm = {}".format(np.linalg.norm(d)))
-    return w
-
 def get_percent_correct(Y, R):
     c = 0
     for y, r in zip(Y, R):
         c = c + 1 if y == r else c
     return (c / Y.shape[0]) * 100
 
-def test(w):
-    X, Y = get_data('test')
+def test(w, type):
+    X, Y = get_data(type)
     R = [-1 if np.sum(x * w) < 0 else 1 for x in X]
     c = get_percent_correct(Y, R)
     print("Percent Correct {}".format(c))
-    return w
+    return c
+
+def train():
+    X, Y = get_data('train')
+    w = np.zeros(X.shape[1])
+    eps = 4
+    d = eps + 1
+    i = 0
+    results = []
+    while np.linalg.norm(d) > eps:
+        i += 1
+        print("Batch {}".format(i))
+        d, w = batch_train(X, Y, w)
+        results += [(test(w, "train"), test(w, "test"))]
+    return results
+
+def plot(r):
+    train_results = [i[0] for i in r]
+    test_results = [i[1] for i in r]
+    x_ax = range(len(r))
+    plt.plot(x_ax, train_results, 'r', label='train')
+    plt.plot(x_ax, test_results, 'b', label='test')
+    plt.legend()
+    plt.show()
 
 if __name__ == "__main__":
-    w = train()
-    test(w)
-
-## WHY THE FUCK IS IT STOPING AT BATCH 151!?
+    results = train()
+    plot(results)
