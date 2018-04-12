@@ -12,6 +12,19 @@ def get_data(type):
     targets = [i[256] for i in data_ints]
     return (np.array(data_ints), np.array(targets))
 
+# def grad(v):
+#     return None
+#
+# def loss(g, y):
+#     return None
+#
+# def batch_train2(X, Y, w):
+#     lam = 0.0001
+#     for x, y in zip(X, Y):
+#         t1 = loss(grad(w * x), y)
+#         t2 = (lam * (np.linalg.norm(w) ** 2)) / 2
+#     return t1 + t2
+
 def batch_train(X, Y, w):
     eta = 10 ** -7
     nabla = np.zeros(X.shape[1])
@@ -20,19 +33,6 @@ def batch_train(X, Y, w):
         nabla = nabla + ((y_hat - y) * x)
     w = w - (eta * nabla)
     return nabla, w
-
-def grad(v):
-    return None
-
-def loss(g, y):
-    return None
-
-# def batch_train2(X, Y, w):
-#     lam = 0.0001
-#     for x, y in zip(X, Y):
-#         t1 = loss(grad(w * x), y)
-#         t2 = (lam * (np.linalg.norm(w) ** 2)) / 2
-#     return t1 + t2
 
 def get_percent_correct(Y, R):
     c = 0
@@ -46,10 +46,10 @@ def test(w, type):
     c = get_percent_correct(Y, R)
     return c
 
-def train():
+def training_loop():
     X, Y = get_data('train')
     w = np.zeros(X.shape[1])
-    eps = 4
+    eps = 350
     d = eps + 1
     i = 0
     results = []
@@ -71,5 +71,5 @@ def plot(r):
     plt.show()
 
 if __name__ == "__main__":
-    results = train()
+    results = training_loop()
     plot(results)

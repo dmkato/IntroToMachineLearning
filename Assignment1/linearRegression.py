@@ -54,7 +54,6 @@ def Avg_Sq_Err(Y, Yp):
     return ASE
 
 def get_ASEs(dummy=True, r_count=0):
-    print("{}".format("With Dummy" if dummy else "Without Dummy"))
     print("d = {}".format(r_count))
     X, Y = get_clean_data('train', dummy, r_count)
     w = optimal_weight_vector(X, Y)
