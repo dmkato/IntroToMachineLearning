@@ -1,40 +1,38 @@
 from functools import reduce
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 import random
 import sys
-
-def print_ex(x):
-    ramp = ['$', '0', 'L', 'J', 'Y', 'z', 'v', 'n', 'r', 'f', '/', '|', ')', '{', '[', '?', '_', '~', '>', '!', 'I', ':', '^', "'", ' ']
-    rx = [i//10 for i in x]
-    for i in range(16):
-        for j in range(16):
-            print(ramp[rx[(16*i)+j] - 1], end='')
-            print(ramp[rx[(16*i)+j] - 1], end='')
-        print()
 
 def get_data(type):
     with open('data/usps-4-9-{}.csv'.format(type), 'r') as data_file:
         data_strings = [l.split(',') for l in data_file.readlines()]
     data_ints = [[int(c) for c in l] for l in data_strings]
-    targets = [1 if i[256] == 1 else -1 for i in data_ints]
+    targets = [i[256] for i in data_ints]
     return (np.array(data_ints), np.array(targets))
 
 def batch_train(X, Y, w):
-    """
-    X: Example Set
-    Y: Training Solutions
-    w: Weight Vector
-    """
-    n = 1
-    d = np.zeros(X.shape[1])
+    eta = 10 ** -7
+    nabla = np.zeros(X.shape[1])
     for x, y in zip(X, Y):
-        u = w * x
-        if np.sum(y * u) <= 0:
-            d = np.subtract(d, x * y)
-    d = np.divide(d, X.shape[1])
-    w = np.subtract(w, n * d)
-    return d, w
+        y_hat = 1 / (1 + np.exp(-w * x))
+        nabla = nabla + ((y_hat - y) * x)
+    w = w - (eta * nabla)
+    return nabla, w
+
+def grad(v):
+    return None
+
+def loss(g, y):
+    return None
+
+# def batch_train2(X, Y, w):
+#     lam = 0.0001
+#     for x, y in zip(X, Y):
+#         t1 = loss(grad(w * x), y)
+#         t2 = (lam * (np.linalg.norm(w) ** 2)) / 2
+#     return t1 + t2
 
 def get_percent_correct(Y, R):
     c = 0
@@ -44,9 +42,8 @@ def get_percent_correct(Y, R):
 
 def test(w, type):
     X, Y = get_data(type)
-    R = [-1 if np.sum(x * w) < 0 else 1 for x in X]
+    R = [0 if np.sum(x * w) < 0 else 1 for x in X]
     c = get_percent_correct(Y, R)
-    print("Percent Correct {}".format(c))
     return c
 
 def train():
@@ -56,11 +53,12 @@ def train():
     d = eps + 1
     i = 0
     results = []
+    print("{: <7} {: <15} {: <14} {: <10}".format("Batch", "Train Percent", "Test Percent", "Delta Norm"))
     while np.linalg.norm(d) > eps:
         i += 1
-        print("Batch {}".format(i))
         d, w = batch_train(X, Y, w)
         results += [(test(w, "train"), test(w, "test"))]
+        print("{: <7} {: <15.4f} {: <14.4f} {: <10.5f}".format(i, results[i-1][0], results[i-1][1], np.linalg.norm(d)))
     return results
 
 def plot(r):
