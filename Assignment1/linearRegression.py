@@ -77,6 +77,8 @@ def plot_ASEs(ASEs):
     x_ax = range(len(ASEs))
     plt.plot(x_ax, train_ASEs, 'r', label='train')
     plt.plot(x_ax, test_ASEs, 'b', label='test')
+    plt.xlabel("Number of Random Variables")
+    plt.ylabel("Average Squared Error")
     plt.legend()
     plt.show()
 

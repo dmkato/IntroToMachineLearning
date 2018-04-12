@@ -67,6 +67,8 @@ def plot(r):
     x_ax = range(len(r))
     plt.plot(x_ax, train_results, 'r', label='train')
     plt.plot(x_ax, test_results, 'b', label='test')
+    plt.xlabel("Batch Number")
+    plt.ylabel("Percent Correct")
     plt.legend()
     plt.show()
 
