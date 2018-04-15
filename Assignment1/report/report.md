@@ -7,28 +7,9 @@ fontsize: 11pt
 
 # Linear Regression
 1. The learned weight vector of the test data is:
-            $$
-            \left[\begin{array}{cc}
-            3.95843212e+01 \\
-            -1.01137046e-01 \\
-            4.58935299e-02 \\
-            -2.73038670e-03 \\
-            3.07201340e+00 \\
-            -1.72254072e+01 \\
-            3.71125235e+00 \\
-            7.15862492e-03 \\
-            -1.59900210e+00 \\
-            3.73623375e-01 \\
-            -1.57564197e-02 \\
-            -1.02417703e+00 \\
-            9.69321451e-03 \\
-            -5.85969273e-01 \\
-            \end{array}\right]
-            $$    
-  Here is the learned weight vector next to the features that each weight describes:
 
 **Weight**          **Feature**
------------------   -----------------------------------------------------------------
+-----------------   ----------------------------------------------------------------
 3.95843212e+01      Dummy
 -1.01137046e-01     per capita crime rate by town
 4.58935299e-02      proportion of residential land zoned for lots over 25,000sq.ft.
@@ -43,7 +24,7 @@ fontsize: 11pt
 -1.02417703e+00     pupil-teacher ratio by town
 9.69321451e-03      1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town
 -5.85969273e-01     % lower status of the population
------------------  ------------------------------------------------------------------
+-----------------  -----------------------------------------------------------------
 
 
 2. Training Dataset ASE: 22.081273187 \
@@ -64,4 +45,5 @@ Test Dataset ASE: 22.6382562966
 
 1.
 
-2. Adding regularization will allow the algorithm to train with more sensitivity to the size of the weights.  By adding a function of the weights, the regression will be less likely to overfit using extreme weights.  This will prevent a misled learning of data, and help make the final weights more accurate.  Our L2 algorithm is similar to the regression algorithm, but with the added weight calculation: $$ \sum_{i=1}^{n}l(g(w^Tx^i),y^i)+\frac{1}{2}\lambda|__w__ |^2 $$
+2. Adding regularization will allow the algorithm to train with more sensitivity to the size of the weights.  By adding a function of the weights, the regression will be less likely to overfit using extreme weights.  This will prevent a misled learning of data, and help make the final weights more accurate.  Our L2 algorithm is similar to the regression algorithm, but with the added weight calculation:
+$$ \sum_{i=1}^{n}l(g(w^Tx^i),y^i)+\frac{1}{2}\lambda|w|^2 $$

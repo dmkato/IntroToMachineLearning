@@ -12,29 +12,25 @@ def get_data(type):
     targets = [i[256] for i in data_ints]
     return (np.array(data_ints), np.array(targets))
 
-def grad(v):
+def sigmoid(w, x):
+    return 1 / (1 + np.exp(-w * x))
 
-    return None
+def loss(y, y_hat, x):
+    return ((y_hat - y) * x)
 
-# def loss(g, y):
-#     return None
-#
-# def batch_train2(X, Y, w):
-#     lam = 0.0001
-#     for x, y in zip(X, Y):
-#         t1 = loss(grad(w * x), y)
-#         t2 = (lam * (np.linalg.norm(w) ** 2)) / 2
-#     return t1 + t2
+def reg(lam, w):
+    return (lam * sum(w)**2 / 2)
 
 def batch_train(X, Y, w):
     eta = 10 ** -7
-    nabla = np.zeros(X.shape[1])
+    lam = 10 ** -2
+    delta = np.zeros(X.shape[1])
     for x, y in zip(X, Y):
-        y_hat = 1 / (1 + np.exp(-w * x))
-        nabla = nabla + ((y_hat - y) * x)
-    w = w - (eta * nabla)
-    w = w + (10**-7)*sum(w**2)
-    return nabla, w
+        y_hat = sigmoid(w, x)
+        delta_i = loss(y, y_hat, x) + reg(lam, w)
+        delta = delta + delta_i
+    w = w - (eta * delta)
+    return delta, w
 
 def get_percent_correct(Y, R):
     c = 0
@@ -44,14 +40,14 @@ def get_percent_correct(Y, R):
 
 def test(w, type):
     X, Y = get_data(type)
-    R = [0 if np.sum(x * w) < 0 else 1 for x in X]
+    R = [1 if np.sum(x * w) > 0.5 else 0 for x in X]
     c = get_percent_correct(Y, R)
     return c
 
 def training_loop():
     X, Y = get_data('train')
     w = np.zeros(X.shape[1])
-    eps = 350
+    eps = 400
     d = eps + 1
     i = 0
     results = []
@@ -63,6 +59,8 @@ def training_loop():
         print("{: <7} {: <15.4f} {: <14.4f} {: <10.5f}".format(i, results[i-1][0], results[i-1][1], np.linalg.norm(d)))
     return results
 
+
+# Comment out so it runs on the servers
 def plot(r):
     train_results = [i[0] for i in r]
     test_results = [i[1] for i in r]
