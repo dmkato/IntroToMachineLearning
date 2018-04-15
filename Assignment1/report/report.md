@@ -7,11 +7,24 @@ fontsize: 11pt
 
 # Linear Regression
 1. The learned weight vector of the test data is:
-
-            [3.95843212e+01  -1.01137046e-01   4.58935299e-02  -2.73038670e-03
-            3.07201340e+00  -1.72254072e+01   3.71125235e+00   7.15862492e-03
-            -1.59900210e+00   3.73623375e-01  -1.57564197e-02  -1.02417703e+00
-            9.69321451e-03  -5.85969273e-01]    
+            $$
+            \left[\begin{array}{cc}
+            3.95843212e+01 \\
+            -1.01137046e-01 \\
+            4.58935299e-02 \\
+            -2.73038670e-03 \\
+            3.07201340e+00 \\
+            -1.72254072e+01 \\
+            3.71125235e+00 \\
+            7.15862492e-03 \\
+            -1.59900210e+00 \\
+            3.73623375e-01 \\
+            -1.57564197e-02 \\
+            -1.02417703e+00 \\
+            9.69321451e-03 \\
+            -5.85969273e-01 \\
+            \end{array}\right]
+            $$    
   Here is the learned weight vector next to the features that each weight describes:
 
 **Weight**          **Feature**
@@ -45,5 +58,10 @@ Test Dataset ASE: 22.6382562966
 
     ![](./img/ASE_plot.png)
 
-5.
     ![](./img/Batch_Accuracy_Plot.png)
+
+# Logistic Regression
+
+1.
+
+2. Adding regularization will allow the algorithm to train with more sensitivity to the size of the weights.  By adding a function of the weights, the regression will be less likely to overfit using extreme weights.  This will prevent a misled learning of data, and help make the final weights more accurate.  Our L2 algorithm is similar to the regression algorithm, but with the added weight calculation: $$ \sum_{i=1}^{n}l(g(w^Tx^i),y^i)+\frac{1}{2}\lambda|__w__ |^2 $$

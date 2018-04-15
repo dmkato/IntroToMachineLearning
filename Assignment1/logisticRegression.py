@@ -12,9 +12,10 @@ def get_data(type):
     targets = [i[256] for i in data_ints]
     return (np.array(data_ints), np.array(targets))
 
-# def grad(v):
-#     return None
-#
+def grad(v):
+
+    return None
+
 # def loss(g, y):
 #     return None
 #
@@ -32,6 +33,7 @@ def batch_train(X, Y, w):
         y_hat = 1 / (1 + np.exp(-w * x))
         nabla = nabla + ((y_hat - y) * x)
     w = w - (eta * nabla)
+    w = w + (10**-7)*sum(w**2)
     return nabla, w
 
 def get_percent_correct(Y, R):
