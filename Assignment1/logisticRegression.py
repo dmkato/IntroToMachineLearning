@@ -5,6 +5,8 @@ import math
 import random
 import sys
 
+
+
 def get_data(type):
     with open('data/usps-4-9-{}.csv'.format(type), 'r') as data_file:
         data_strings = [l.split(',') for l in data_file.readlines()]
@@ -19,11 +21,11 @@ def loss(y, y_hat, x):
     return ((y_hat - y) * x)
 
 def reg(lam, w):
-    return (lam * sum(w)**2 / 2)
+    return (lam * (sum(w) ** 2) / 2)
 
 def batch_train(X, Y, w):
     eta = 10 ** -7
-    lam = 10 ** -2
+    lam = 10 ** -3
     delta = np.zeros(X.shape[1])
     for x, y in zip(X, Y):
         y_hat = sigmoid(w, x)
@@ -38,14 +40,14 @@ def get_percent_correct(Y, R):
         c = c + 1 if y == r else c
     return (c / Y.shape[0]) * 100
 
-def test(w, type):
-    X, Y = get_data(type)
+def test(w, X, Y):
     R = [1 if np.sum(x * w) > 0.5 else 0 for x in X]
     c = get_percent_correct(Y, R)
     return c
 
 def training_loop():
     X, Y = get_data('train')
+    X_test, Y_test = get_data('test')
     w = np.zeros(X.shape[1])
     eps = 400
     d = eps + 1
@@ -55,12 +57,11 @@ def training_loop():
     while np.linalg.norm(d) > eps:
         i += 1
         d, w = batch_train(X, Y, w)
-        results += [(test(w, "train"), test(w, "test"))]
+        results += [(test(w, X, Y), test(w, X_test, Y_test))]
         print("{: <7} {: <15.4f} {: <14.4f} {: <10.5f}".format(i, results[i-1][0], results[i-1][1], np.linalg.norm(d)))
     return results
 
 
-# Comment out so it runs on the servers
 def plot(r):
     train_results = [i[0] for i in r]
     test_results = [i[1] for i in r]
