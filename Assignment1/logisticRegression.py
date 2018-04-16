@@ -1,5 +1,5 @@
 from functools import reduce
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
 import math
 import random
@@ -61,15 +61,16 @@ def training_loop():
     return results
 
 def plot(r):
-    train_results = [i[0] for i in r]
-    test_results = [i[1] for i in r]
-    x_ax = range(len(r))
-    plt.plot(x_ax, train_results, 'r', label='train')
-    plt.plot(x_ax, test_results, 'b', label='test')
-    plt.xlabel("Batch Number")
-    plt.ylabel("Percent Correct")
-    plt.legend()
-    plt.show()
+    # train_results = [i[0] for i in r]
+    # test_results = [i[1] for i in r]
+    # x_ax = range(len(r))
+    # plt.plot(x_ax, train_results, 'r', label='train')
+    # plt.plot(x_ax, test_results, 'b', label='test')
+    # plt.xlabel("Batch Number")
+    # plt.ylabel("Percent Correct")
+    # plt.legend()
+    # plt.show()
+    return 0
 
 if __name__ == "__main__":
     results = training_loop()

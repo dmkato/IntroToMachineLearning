@@ -1,5 +1,4 @@
-from functools import reduce
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
 import random
 import sys
@@ -72,15 +71,16 @@ def get_ASEs(dummy=True, r_count=0):
     return (ASE, tASE)
 
 def plot_ASEs(ASEs):
-    train_ASEs = [i[0] for i in ASEs]
-    test_ASEs = [i[1] for i in ASEs]
-    x_ax = range(len(ASEs))
-    plt.plot(x_ax, train_ASEs, 'r', label='train')
-    plt.plot(x_ax, test_ASEs, 'b', label='test')
-    plt.xlabel("Number of Random Variables")
-    plt.ylabel("Average Squared Error")
-    plt.legend()
-    plt.show()
+    # train_ASEs = [i[0] for i in ASEs]
+    # test_ASEs = [i[1] for i in ASEs]
+    # x_ax = range(len(ASEs))
+    # plt.plot(x_ax, train_ASEs, 'r', label='train')
+    # plt.plot(x_ax, test_ASEs, 'b', label='test')
+    # plt.xlabel("Number of Random Variables")
+    # plt.ylabel("Average Squared Error")
+    # plt.legend()
+    # plt.show()
+    return 0
 
 if __name__ == "__main__":
     get_ASEs()
