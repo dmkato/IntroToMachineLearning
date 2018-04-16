@@ -41,9 +41,25 @@ Test Dataset ASE: 22.6382562966
 
 # Logistic Regression
 
-1.
+1.  With $\eta = 10 ^{-7}$, the gradient descent algorithm's accuracy follows a logarithmic curve.
+
+**$\eta$**           **Training Accuracy**   **Testing Accuracy**  **$\Delta$ norm** **Number of Batches**
+-------------------  -------                 -------               ---              ----
+$\eta = 10^{-7}$     78.0000                 77.2500               399              1375
+-------------------  -------                 -------               ---              ----
+
     ![](./img/Batch_Accuracy_Plot.png)
 
 2. Adding regularization will allow the algorithm to train with more sensitivity to the size of the weights.  By adding a function of the weights, the regression will be less likely to overfit using extreme weights.  This will prevent a misled learning of data, and help make the final weights more accurate.  Our L2 algorithm is similar to the regression algorithm, but with the added weight calculation:
 $$ \sum_{i=1}^{n}l(g(w^Tx^i),y^i)+\frac{1}{2}\lambda|w|^2 $$
+
     ![](./img/Batch_Accuracy_Plot_lam=10^-2.png)
+
+3. With $\epsilon = 400$
+
+**$\lambda$**         **Training Accuracy**   **Testing Accuracy**  **$\Delta$ norm** **Number of Batches**
+-------------------  -------                 -------               ---              ----
+$\lambda = 10^{-3}$  78.0000                 77.2500               399              1375
+$\lambda = 10^{-2}$  78.0000                 77.2500               399              1375
+$\lambda = 10^{-1}$  78.0000                 77.2500               399              1375
+-------------------  -------                 -------               ---              ----
