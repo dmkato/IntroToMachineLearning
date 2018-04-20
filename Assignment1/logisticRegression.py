@@ -17,6 +17,7 @@ def get_data(type):
         data_strings = [l.split(',') for l in data_file.readlines()]
     data_ints = [[int(c) for c in l] for l in data_strings]
     targets = [i[256] for i in data_ints]
+    fetures = [[f/255 for f in a[:256]] for a in data_ints]
     return (np.array(data_ints), np.array(targets))
 
 def sigmoid(w, x):
@@ -26,11 +27,11 @@ def loss(y, y_hat, x):
     return ((y_hat - y) * x)
 
 def reg(lam, w):
-    return (lam * (sum(w) ** 2) / 2)
+    return lam * w
 
 def batch_train(X, Y, w):
     eta = 10 ** -7
-    lam = 10 ** 2
+    lam = 10 ** 3
     delta = np.zeros(X.shape[1])
     for x, y in zip(X, Y):
         y_hat = sigmoid(w, x)
