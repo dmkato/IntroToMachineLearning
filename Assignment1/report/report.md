@@ -94,14 +94,19 @@ This algorithm translates into code very similar to our initial code for the log
 $10^{-3}$            78.0000                 77.2500               399              1375
 $10^{-2}$            78.0000                 77.2500               399              1375
 $10^{-1}$            78.0000                 77.2500               399              1375
-$10^{1}$             78.1429                 77.5000               399              999
-$10^{2}$             78.2857                 77.5000               399              999
-$10^{3}$             78.4286                 77.5000               399              999
+$10^{1}$             77.5714                 76.8750               398              348
+$10^{2}$             76.8571                 75.7500               390              103
+$10^{3}$             75.7857                 74.3750               343              21
 -------------------  -------                 -------               ---              ----
 
 This data shows an interesting trend.  As we increase our $\lambda$ value, which is the strength of the regularization, I would expect our training to fit less accurately and our testing to increase.  Although our testing accuracy increased, as the algorithm was more sensitive to weight size, the training accuracy also increased.  This is unexpected because $\lambda$ should decrease any overfitting, which would make the training data less accurate.  I may be looking at this wrong though, I'm not sure.  It is also interesting that the testing data seems to have such discrete values.  This may be attributed to the smaller data size, but again, I'm not sure.
 
 These charts display the batch accuracy over time for both $\lambda=10^2$ and $\lambda=10^{-2}$.  With a value of $10^2$ you can see that it seems to fit well, and then minimizes the size of the weights.  This overcorrection causes a falling accuracy, which can be seen in both training and testing data.  Using a value of $\lambda=10^{-2}$ the chart closely resembles the chart from the plan logistic regression, because as $\lambda$ decreases the influence of the regularization decreases.
 
-![](./img/Batch_Accuracy_Plot_lam=10^2.png)
-![](./img/Batch_Accuracy_Plot_lam=10^-2.png)
+![$\lambda=10^{3}$](./img/lam=10^3.png)
+
+![$\lambda=10^{2}$](./img/lam=10^2.png)
+
+![$\lambda=10^{1}$](./img/lam=10^1.png)
+
+![$\lambda=10^{-1}$](./img/lam=10^-1.png)

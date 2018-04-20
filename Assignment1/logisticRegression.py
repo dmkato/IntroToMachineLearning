@@ -6,7 +6,7 @@
 #  3. Run logistic Regression with command `python3.5 logisticRegression.py`
 
 from functools import reduce
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 import math
 import random
@@ -31,7 +31,7 @@ def reg(lam, w):
 
 def batch_train(X, Y, w):
     eta = 10 ** -7
-    lam = 10 ** 3
+    lam = 10 ** -1
     delta = np.zeros(X.shape[1])
     for x, y in zip(X, Y):
         y_hat = sigmoid(w, x)
@@ -69,15 +69,15 @@ def training_loop():
     return results
 
 def plot(r):
-    # train_results = [i[0] for i in r]
-    # test_results = [i[1] for i in r]
-    # x_ax = range(len(r))
-    # plt.plot(x_ax, train_results, 'r', label='train')
-    # plt.plot(x_ax, test_results, 'b', label='test')
-    # plt.xlabel("Batch Number")
-    # plt.ylabel("Percent Correct")
-    # plt.legend()
-    # plt.show()
+    train_results = [i[0] for i in r]
+    test_results = [i[1] for i in r]
+    x_ax = range(len(r))
+    plt.plot(x_ax, train_results, 'r', label='train')
+    plt.plot(x_ax, test_results, 'b', label='test')
+    plt.xlabel("Batch Number")
+    plt.ylabel("Percent Correct")
+    plt.legend()
+    plt.show()
     return 0
 
 if __name__ == "__main__":
