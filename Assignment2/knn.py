@@ -23,25 +23,48 @@ def find_neighbors(train_set, test, k):
     ns = sorted(dists)[:k]
     return [n[1] for n in ns]
 
-def knn(train_set, test, k):
-    ns = find_neighbors(train_set, test, k)
+def nearest_neighbor(ns):
+    # TODO: POssibly weight based on distance
     d = {-1: 0, 1: 0}
     for n in ns:
         d[n] += 1
     return max(d.items(), key=operator.itemgetter(1))[0]
 
-def accuracy(test_set, preds):
+def knn(train_set, test, k):
+    ns = find_neighbors(train_set, test, k)
+    return nearest_neighbor(ns)
+
+def batch_knn(data_set):
+    preds = [knn(train_set, test, k) for test in train_set]
+    train_err = testing_error(train_set, preds)
+    print('Training Error: {}/{}'.format(train_err, len(preds)))
+
+def testing_error(test_set, preds):
     c = 0
     for t, p in zip(test_set, preds):
         if t.y != p:
             c += 1
-    return (len(test_set) - c) / len(test_set) * 100
+    return c
 
 if __name__ =='__main__':
-    preds = []
     k = get_k()
     train_set = get_data('train')
     test_set = get_data('test')
+
+    # Training Error
+    preds = [knn(train_set, test, k) for test in train_set]
+    train_err = testing_error(train_set, preds)
+    print('Training Error: {}/{}'.format(train_err, len(preds)))
+
+    # Leave-One-Out Cross-validation-error
+    preds = []
+    for idx, test in enumerate(train_set):
+        loo_set = train_set[:idx] + train_set[idx+1:]
+        preds += [knn(loo_set, test, k)]
+    train_err = testing_error(train_set, preds)
+    print('LOOCVE Error: {}/{}'.format(train_err, len(preds)))
+
+    # Testing Error
     preds = [knn(train_set, test, k) for test in test_set]
-    a = accuracy(test_set, preds)
-    print(a)
+    test_err = testing_error(test_set, preds)
+    print('Testing Error: {}/{}'.format(test_err, len(preds)))
