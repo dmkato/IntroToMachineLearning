@@ -56,22 +56,16 @@ def all_same_class(dataset):
 def split(data_set, feature, theta):
     l = [d for d in data_set if d.x[feature] < theta]
     r = [d for d in data_set if d.x[feature] >= theta]
-    # return l, r
-    l_neg_ratio = len([i for i in l if i.y == -1]) / len(l)
-    r_neg_ratio = len([i for i in r if i.y == -1]) / len(r)
-    if l_neg_ratio < r_neg_ratio:
-        return r, l
-    else:
-        return l, r
+    return l, r
 
 def build_tree(dataset, max_depth, depth=0, d_class=1):
     if all_same_class(dataset) or depth == max_depth:
-        return Node(dataset, depth, d_class=d_class)
+        return Node(dataset, depth)
     feature, ig, theta = decision(dataset)
     n = Node(dataset, depth, feature, theta)
     l, r = split(dataset, feature, theta)
-    n.l = build_tree(l, max_depth, depth+1, d_class=-1)
-    n.r = build_tree(r, max_depth, depth+1, d_class=1)
+    n.l = build_tree(l, max_depth, depth+1)
+    n.r = build_tree(r, max_depth, depth+1)
     return n
 
 def error_ratio(subarr):
