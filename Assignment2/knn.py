@@ -85,9 +85,8 @@ def knn_with_k(k, train_set, test_set):
     # print('Testing Error: {}/{}'.format(test_err, len(preds)))
     return loocve_err
 
-if __name__ =='__main__':
+def model_selection():
     results = []
-    # k = get_k()
     norm_vect = get_norm_vect()
     train_set = get_norm_data('train', norm_vect)
     test_set = get_norm_data('test', norm_vect)
@@ -97,3 +96,7 @@ if __name__ =='__main__':
 
     best_k = min([(r, i) for i, r in enumerate(results)])
     print("Optimal k: {}".format(best_k))
+
+if __name__ =='__main__':
+    k = get_k()
+    knn_with_k()

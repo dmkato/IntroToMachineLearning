@@ -51,6 +51,11 @@ def all_same_class(dataset):
     if len(pos) == len(dataset) or len(pos) == 0:
         return True
 
+def split(data_set, feature, theta):
+    l = [d for d in data_set if d.x[feature] < theta]
+    r = [d for d in data_set if d.x[feature] >= theta]
+    return l, r
+
 def build_tree(dataset, max_depth, depth=0):
     if all_same_class(dataset) or depth == max_depth:
         return Node(dataset, depth)
@@ -67,11 +72,6 @@ def error_ratio(subarr):
     m = min(pos_count, neg_count)
     return m / len(subarr)
 
-def split(data_set, feature, theta):
-    l = [d for d in data_set if d.x[feature] < theta]
-    r = [d for d in data_set if d.x[feature] >= theta]
-    return l, r
-
 def test_decision(feature, theta, data_set):
     l, r = split(data_set, feature, theta)
     return (error_ratio(l) + error_ratio(r)) * 100
@@ -86,11 +86,32 @@ def decision_stump():
     error = test_decision(feature, theta, test_data)
     print("Percent Error: {:.2f}".format(error))
 
+def traverse_tree(root, features):
+    if root.d_class != None:
+        return root.d_class
+
+    if features[root.feature] < root.theta:
+        return traverse_tree(root.l, features)
+    else:
+        return traverse_tree(root.r, features)
+
+def test_tree(root, data):
+    numCorrect = 0
+    for d in data:
+        result = traverse_tree(root, d.x)
+        if result == d.y:
+            numCorrect += 1
+    print("{} / {}".format(numCorrect, len(data)))
+
 def decision_tree(max_depth):
     train_data = get_data('train')
     test_data = get_data('test')
     root = build_tree(train_data, max_depth)
     root.print_tree()
+    print("Train")
+    test_tree(root, train_data)
+    print("Test")
+    test_tree(root, test_data)
 
 if __name__ == '__main__':
-    decision_tree(4)
+    decision_tree(int(sys.argv[1]))
