@@ -2,7 +2,7 @@ import sys
 import operator
 import numpy as np
 from Data import Data
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 def get_k():
     if len(sys.argv) == 3 and sys.argv[1] == '-k' and sys.argv[2].isdigit():
@@ -86,36 +86,37 @@ def knn_with_k(train_set, test_set, k):
     print('Testing Error: {}/{}'.format(test_err, len(preds)))
     return (train_err, loocve_err, test_err)
 
-def model_selection():
+def model_selection(train_set, test_set):
     results = []
     norm_vect = get_norm_vect()
     train_set = get_norm_data('train', norm_vect)
     test_set = get_norm_data('test', norm_vect)
     for k in range(50):
         print('k = {}'.format(k))
-        results += [knn_with_k(k, train_set, test_set)][1]
+        results += [knn_with_k(train_set, test_set, k)[1]]
+        print()
 
     best_k = min([(r, i) for i, r in enumerate(results)])
     print("Optimal k: {}".format(best_k))
 
-def plot_knn():
+# def plot_knn(train_set, test_set):
+#     all_results = [knn_with_k(train_set, test_set, k) for k in range(1, 51)]
+#     train_err = [d[0] for d in all_results]
+#     loocve_err = [d[1] for d in all_results]
+#     test_err = [d[2] for d in all_results]
+#
+#     x_ax = range(len(all_results))
+#     plt.plot(x_ax, train_err, 'r', label='Train Error')
+#     plt.plot(x_ax, loocve_err, 'b', label='LOOCVE Error')
+#     plt.plot(x_ax, test_err, 'g', label='Test Error')
+#     plt.xlabel("k")
+#     plt.ylabel("Number of Errors")
+#     plt.legend()
+#     plt.show()
+
+if __name__ =='__main__':
     norm_vect = get_norm_vect()
     train_set = get_norm_data('train', norm_vect)
     test_set = get_norm_data('test', norm_vect)
-
-    all_results = [knn_with_k(train_set, test_set, k) for k in range(1, 51)]
-    train_err = [d[0] for d in all_results]
-    loocve_err = [d[1] for d in all_results]
-    test_err = [d[2] for d in all_results]
-
-    x_ax = range(len(all_results))
-    plt.plot(x_ax, train_err, 'r', label='Train Error')
-    plt.plot(x_ax, loocve_err, 'b', label='LOOCVE Error')
-    plt.plot(x_ax, test_err, 'g', label='Test Error')
-    plt.xlabel("k")
-    plt.ylabel("Number of Errors")
-    plt.legend()
-    plt.show()
-
-if __name__ =='__main__':
-    plot_knn()
+    model_selection(train_set, test_set)
+    # plot_knn()

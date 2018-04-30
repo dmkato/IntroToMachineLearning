@@ -4,7 +4,7 @@ import numpy as np
 import math
 from Data import Data
 from Node import Node
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 def get_data(type):
     with open('knn_data/knn_{}.csv'.format(type), 'r') as f:
@@ -107,26 +107,27 @@ def test_tree(root, data):
 
 def decision_tree(max_depth, train_data, test_data):
     root = build_tree(train_data, max_depth)
-    root.print_tree()
-    print()
     train_err = test_tree(root, train_data)
     test_err = test_tree(root, test_data)
+    root.print_tree()
+    print("Max Depth = {}".format(max_depth))
+    print("Train Error: {}, Train Error: {}".format(train_err, test_err))
     return train_err, test_err
 
-def plot(results):
-    train_err = [d[0] for d in results]
-    test_err = [d[1] for d in results]
-    x_ax = range(1, len(results) + 1)
-    plt.plot(x_ax, train_err, 'r', label='Train Error')
-    plt.plot(x_ax, test_err, 'b', label='Test Error')
-    plt.xlabel("Depth")
-    plt.ylabel("Number of Errors")
-    plt.legend()
-    plt.show()
+# def plot(results):
+#     train_err = [d[0] for d in results]
+#     test_err = [d[1] for d in results]
+#     x_ax = range(1, len(results) + 1)
+#     plt.plot(x_ax, train_err, 'r', label='Train Error')
+#     plt.plot(x_ax, test_err, 'b', label='Test Error')
+#     plt.xlabel("Depth")
+#     plt.ylabel("Number of Errors")
+#     plt.legend()
+#     plt.show()
 
 if __name__ == '__main__':
     train_data = get_data('train')
     test_data = get_data('test')
     results = [decision_tree(i, train_data, test_data) for i in range(1, 7)]
-    print(results)
-    plot(results)
+    # print(results)
+    # plot(results)
