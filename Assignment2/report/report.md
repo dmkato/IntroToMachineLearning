@@ -6,13 +6,15 @@ fontsize: 11pt
 ---
 
 # KNN
-1. We've implemented the KNN algorithm in Python, found in knn.py, it.
+1. See knn.py.
 
 2. Using the KNN code base, we calculated the training error, leave-one-out validation, and the testing error.  This is shown in the following plot.
 
 ![Plot of KNN using various error methods](./img/knn_plot.png)
 
-3. 
+3. In the plot above, you can see that the train error starts at 0. This is because each training example put through the knn algorithm is finding itself in the training set as its 1 nearest neighbor, and as a result the algorithm correctly classifies 100% of the time. The training error gradually increases because it is allowing examples that are very different from the data point being evaluated to be taken into account when deciding the majority class of all the neighbors.
+    The Leave-One-Out Cross-Validation-Error has 9 Errors when k = 1
+
 
 # Decision Tree
 
