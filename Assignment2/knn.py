@@ -1,3 +1,10 @@
+# By Daniel Kato and Nathan Shepherd
+#
+# Instructions:
+#  1. Place data files directly in folder with python files
+#  2. Source the python3.5 venv by running `source /scratch/cs434spring2018/env_3.5/bin/activate`
+#  3. Run knn with command `python3 knn.py`
+
 import sys
 import operator
 import numpy as np
@@ -11,7 +18,7 @@ def get_k():
     exit()
 
 def get_data(type):
-    with open('knn_data/knn_{}.csv'.format(type), 'r') as f:
+    with open('./knn_{}.csv'.format(type), 'r') as f:
         lines = [l.strip().split(',') for l in f.readlines()]
     data_set = [Data(l[1:], l[0]) for l in lines]
     return data_set
