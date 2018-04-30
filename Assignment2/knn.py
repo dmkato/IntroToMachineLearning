@@ -8,8 +8,12 @@
 import sys
 import operator
 import numpy as np
-from Data import Data
 # import matplotlib.pyplot as plt
+
+class Data:
+    def __init__(self, x, y):
+        self.x = np.array(x, dtype=float)
+        self.y = int(y)
 
 def get_k():
     if len(sys.argv) == 3 and sys.argv[1] == '-k' and sys.argv[2].isdigit():
