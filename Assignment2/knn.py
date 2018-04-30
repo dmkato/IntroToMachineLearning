@@ -37,7 +37,7 @@ def normalize(features, norm_vect):
     return [(float(f) - n[0]) / (n[1] - n[0]) for f, n in zip(features, norm_vect)]
 
 def get_norm_data(type, norm_vect):
-    with open('knn_data/knn_{}.csv'.format(type), 'r') as f:
+    with open('./knn_{}.csv'.format(type), 'r') as f:
         lines = [l.strip().split(',') for l in f.readlines()]
     data_set = [Data(normalize(l[1:], norm_vect), l[0]) for l in lines]
     return data_set
