@@ -72,7 +72,6 @@ def show_examples():
         image = X_train[i,:,:,:].numpy()
         plt.imshow(image.reshape(3,32,32).transpose(1,2,0))
         plt.title('Class: '+str(y_train[i]))
-    plt.show()
 
 def plot_results():
     plt.figure(figsize=(5,3))
@@ -114,7 +113,7 @@ if __name__ == '__main__':
     model = Net()
     if cuda:
         model.cuda()
-    optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.5)
+    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.5)
     print(model)
     epochs = 10
     lossv, accv = [], []
