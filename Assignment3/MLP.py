@@ -62,6 +62,10 @@ def validate(loss_vector, accuracy_vector):
         val_loss, correct, len(validation_loader.dataset), accuracy))
 
 def show_examples():
+    for (X_train, y_train) in train_loader:
+        print('X_train:', X_train.size(), 'type:', X_train.type())
+        print('y_train:', y_train.size(), 'type:', y_train.type())
+        break
     for i in range(10):
         plt.subplot(1,10,i+1)
         plt.axis('off')
@@ -103,7 +107,7 @@ if __name__ == '__main__':
         model.cuda()
     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.5)
     print(model)
-    epochs = 2
+    epochs = 10
     lossv, accv = [], []
     for epoch in range(1, epochs + 1):
         train(epoch)
