@@ -35,11 +35,13 @@ def train(epoch, log_interval=100):
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.data[0]))
+        if batch_idx == 4:
+            return
 
 def validate(loss_vector, accuracy_vector):
     model.eval()
     val_loss, correct = 0, 0
-    for data, target in validation_loader:
+    for batch_idx, (data, target) in enumerate(train_loader):
         if cuda:
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data, volatile=True), Variable(target)
@@ -48,14 +50,15 @@ def validate(loss_vector, accuracy_vector):
         pred = output.data.max(1)[1] # get the index of the max log-probability
         correct += pred.eq(target.data).cpu().sum()
 
-    val_loss /= len(validation_loader)
+    val_len = (len(train_loader.dataset) - (32 * 4))
+    val_loss /= val_len
     loss_vector.append(val_loss)
 
-    accuracy = 100. * correct / len(validation_loader.dataset)
+    accuracy = 100. * correct / val_len
     accuracy_vector.append(accuracy)
 
     print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-        val_loss, correct, len(validation_loader.dataset), accuracy))
+        val_loss, correct, val_len, accuracy))
 
 def show_examples():
     for (X_train, y_train) in train_loader:
@@ -111,7 +114,7 @@ if __name__ == '__main__':
         model.cuda()
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.5)
     print(model)
-    epochs = 10
+    epochs = 150
     lossv, accv = [], []
     for epoch in range(1, epochs + 1):
         train(epoch)
