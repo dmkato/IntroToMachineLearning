@@ -37,11 +37,34 @@ def train(epoch, log_interval=100):
                 100. * batch_idx / len(train_loader), loss.data[0]))
         if batch_idx == 4:
             return
+#
+# def validate(loss_vector, accuracy_vector):
+#     model.eval()
+#     val_loss, correct = 0, 0
+#     for batch_idx, (data, target) in enumerate(train_loader):
+#         if cuda:
+#             data, target = data.cuda(), target.cuda()
+#         data, target = Variable(data, volatile=True), Variable(target)
+#         output = model(data)
+#         val_loss += F.nll_loss(output, target).data[0]
+#         pred = output.data.max(1)[1] # get the index of the max log-probability
+#         correct += pred.eq(target.data).cpu().sum()
+#
+#     val_len = (len(train_loader.dataset) - (32 * 4))
+#     val_loss /= val_len
+#     loss_vector.append(val_loss)
+#
+#     accuracy = 100. * correct / val_len
+#     accuracy_vector.append(accuracy)
+#
+#     print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+#         val_loss, correct, val_len, accuracy))
+
 
 def validate(loss_vector, accuracy_vector):
     model.eval()
     val_loss, correct = 0, 0
-    for batch_idx, (data, target) in enumerate(train_loader):
+    for data, target in validation_loader:
         if cuda:
             data, target = data.cuda(), target.cuda()
         data, target = Variable(data, volatile=True), Variable(target)
@@ -50,7 +73,7 @@ def validate(loss_vector, accuracy_vector):
         pred = output.data.max(1)[1] # get the index of the max log-probability
         correct += pred.eq(target.data).cpu().sum()
 
-    val_len = (len(train_loader.dataset) - (32 * 4))
+    val_len = len(validation_loader.dataset)
     val_loss /= val_len
     loss_vector.append(val_loss)
 
@@ -112,9 +135,9 @@ if __name__ == '__main__':
     model = Net()
     if cuda:
         model.cuda()
-    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.5)
+    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.5)
     print(model)
-    epochs = 150
+    epochs = 25
     lossv, accv = [], []
     for epoch in range(1, epochs + 1):
         train(epoch)
