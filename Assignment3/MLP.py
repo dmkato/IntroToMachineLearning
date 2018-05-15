@@ -16,7 +16,7 @@ class Net(nn.Module):
 
     def forward(self, x):
         x = x.view(-1, 32*32*3)
-        x = F.sigmoid(self.fc1(x))
+        x = getattr(F, activation_func)(self.fc1(x))
         x = self.fc1_drop(x)
         return F.log_softmax(self.fc2(x))
 
@@ -37,11 +37,33 @@ def train(epoch, log_interval=100):
                 100. * batch_idx / len(train_loader), loss.data[0]))
         if batch_idx == 4:
             return
+
+def validate(loss_vector, accuracy_vector):
+    model.eval()
+    val_loss, correct = 0, 0
+    for batch_idx, (data, target) in enumerate(train_loader):
+        if cuda:
+            data, target = data.cuda(), target.cuda()
+        data, target = Variable(data, volatile=True), Variable(target)
+        output = model(data)
+        val_loss += F.nll_loss(output, target).data[0]
+        pred = output.data.max(1)[1] # get the index of the max log-probability
+        correct += pred.eq(target.data).cpu().sum()
+
+    val_len = (len(train_loader.dataset) - (32 * 4))
+    val_loss /= val_len
+    loss_vector.append(val_loss)
+
+    accuracy = 100. * correct / val_len
+    accuracy_vector.append(accuracy)
+
+    print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+        val_loss, correct, val_len, accuracy))
 #
 # def validate(loss_vector, accuracy_vector):
 #     model.eval()
 #     val_loss, correct = 0, 0
-#     for batch_idx, (data, target) in enumerate(train_loader):
+#     for data, target in validation_loader:
 #         if cuda:
 #             data, target = data.cuda(), target.cuda()
 #         data, target = Variable(data, volatile=True), Variable(target)
@@ -50,7 +72,7 @@ def train(epoch, log_interval=100):
 #         pred = output.data.max(1)[1] # get the index of the max log-probability
 #         correct += pred.eq(target.data).cpu().sum()
 #
-#     val_len = (len(train_loader.dataset) - (32 * 4))
+#     val_len = len(validation_loader.dataset)
 #     val_loss /= val_len
 #     loss_vector.append(val_loss)
 #
@@ -60,7 +82,7 @@ def train(epoch, log_interval=100):
 #     print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
 #         val_loss, correct, val_len, accuracy))
 
-def validate(loss_vector, accuracy_vector):
+def test():
     model.eval()
     val_loss, correct = 0, 0
     for data, target in validation_loader:
@@ -74,10 +96,9 @@ def validate(loss_vector, accuracy_vector):
 
     val_len = len(validation_loader.dataset)
     val_loss /= val_len
-    loss_vector.append(val_loss)
 
     accuracy = 100. * correct / val_len
-    accuracy_vector.append(accuracy)
+    print('Test:')
 
     print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         val_loss, correct, val_len, accuracy))
@@ -97,11 +118,11 @@ def show_examples():
 def plot_results():
     plt.figure(figsize=(5,3))
     plt.plot(np.arange(1,epochs+1), lossv)
-    plt.title('Validation Loss (Learning Rate = {})'.format(lr))
+    plt.title('Validation Loss {} (Learning Rate = {})'.format(activation_func.title(), lr))
 
     plt.figure(figsize=(5,3))
     plt.plot(np.arange(1,epochs+1), accv)
-    plt.title('Validation Accuracy (Learning Rate = {})'.format(lr))
+    plt.title('Validation Accuracy {} (Learning Rate = {})'.format(activation_func.title(), lr))
     plt.show()
 
 def create_train_loader():
@@ -122,6 +143,11 @@ def create_validation_loader():
     return loader
 
 if __name__ == '__main__':
+    lr = 0.1
+    epochs = 2
+    activation_func = 'relu'
+    momentum = 0.5
+
     cuda = torch.cuda.is_available()
     print('Using PyTorch version:', torch.__version__, 'CUDA:', cuda)
     batch_size = 32
@@ -134,12 +160,11 @@ if __name__ == '__main__':
     model = Net()
     if cuda:
         model.cuda()
-    lr = 0.01
-    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.5)
+    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=momentum)
     print(model)
-    epochs = 1000
     lossv, accv = [], []
     for epoch in range(1, epochs + 1):
         train(epoch)
         validate(lossv, accv)
+    test()
     plot_results()
