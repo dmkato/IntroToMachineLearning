@@ -60,7 +60,6 @@ def train(epoch, log_interval=100):
 #     print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
 #         val_loss, correct, val_len, accuracy))
 
-
 def validate(loss_vector, accuracy_vector):
     model.eval()
     val_loss, correct = 0, 0
@@ -98,11 +97,11 @@ def show_examples():
 def plot_results():
     plt.figure(figsize=(5,3))
     plt.plot(np.arange(1,epochs+1), lossv)
-    plt.title('validation loss')
+    plt.title('Validation Loss (Learning Rate = {})'.format(lr))
 
     plt.figure(figsize=(5,3))
     plt.plot(np.arange(1,epochs+1), accv)
-    plt.title('validation accuracy');
+    plt.title('Validation Accuracy (Learning Rate = {})'.format(lr))
     plt.show()
 
 def create_train_loader():
@@ -135,9 +134,10 @@ if __name__ == '__main__':
     model = Net()
     if cuda:
         model.cuda()
-    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.5)
+    lr = 0.01
+    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.5)
     print(model)
-    epochs = 25
+    epochs = 1000
     lossv, accv = [], []
     for epoch in range(1, epochs + 1):
         train(epoch)
