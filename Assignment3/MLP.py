@@ -1,10 +1,3 @@
-# By Nathan Shepherd and Daniel Kato
-#
-# Instructions:
-# 1. Source the python3.5 environment
-# 2. Set parameters at the top of the main function
-# 3. run `python MLP.py`
-#
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -12,13 +5,13 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.autograd import Variable
 import numpy as np
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         self.fc1 = nn.Linear(32*32*3, 100)
-        self.fc1_drop = nn.Dropout(0.2)
+        self.fc1_drop = nn.Dropout(dropout)
         self.fc2 = nn.Linear(100, 10)
 
     def forward(self, x):
@@ -95,7 +88,7 @@ def test():
     for data, target in validation_loader:
         if cuda:
             data, target = data.cuda(), target.cuda()
-        data, target = Variable(data, volatile=True), Variable(target)
+        data, target = Variable(data), Variable(target)
         output = model(data)
         val_loss += F.nll_loss(output, target).data[0]
         pred = output.data.max(1)[1] # get the index of the max log-probability
@@ -105,9 +98,14 @@ def test():
     val_loss /= val_len
 
     accuracy = 100. * correct / val_len
-    print('Test:')
-
-    print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+    print('Results:')
+    print('lr = {}'.format(lr))
+    print('epochs = {}'.format(epochs))
+    print('activation_func = {}'.format(activation_func))
+    print('momentum = {}'.format(momentum))
+    print('dropout = {}'.format(dropout))
+    print('weight_decay = {}'.format(weight_decay))
+    print('Test set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         val_loss, correct, val_len, accuracy))
 
 # def show_examples():
@@ -150,10 +148,12 @@ def create_validation_loader():
     return loader
 
 if __name__ == '__main__':
-    lr = 0.1
-    epochs = 2
+    lr = 0.0001
+    epochs = 1
     activation_func = 'relu'
-    momentum = 0.5
+    momentum = 0.8
+    dropout = 0.4
+    weight_decay = 0.0001
 
     cuda = torch.cuda.is_available()
     print('Using PyTorch version:', torch.__version__, 'CUDA:', cuda)
@@ -163,11 +163,11 @@ if __name__ == '__main__':
     validation_loader = create_validation_loader()
     # pltsize=1
     # plt.figure(figsize=(10*pltsize, pltsize))
-    # show_examples()
+    show_examples()
     model = Net()
     if cuda:
         model.cuda()
-    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=momentum)
+    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=momentum, weight_decay=weight_decay)
     print(model)
     lossv, accv = [], []
     for epoch in range(1, epochs + 1):
