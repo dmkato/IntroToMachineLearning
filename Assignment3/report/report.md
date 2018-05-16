@@ -23,6 +23,28 @@ The learning rate that worked best with the sigmoid activation function was $lr 
 <!-- What is a good learning rate that works for this data and this network structure?
 Present your plots for different choices of learning rates to help justify your final choice of the learning rate.
 How do you decide when to stop training? Evaluate your final trained network on the testing data and report its accuracy. -->
+Using the RELU or Rectified Linear Unit activation function activates nodes based off of a linear rise from 0.
+Once implemented, we tested the Relu machine on different learning rates, with 1000 batches.
+This showed similar results as the sigmoid activation function, with a more pronounced reaction to a large learning rate.
+From our data, it can be seen that increasing the learning rate to 0.01 caused both the accuracy and the validation loss to bounce violently.
+Not only was the training unpredictable with a high learning rate, but it didn't reach near the accuracy or validation loss that the 0.01 learning rate did.
+The learning rate of 0.01 reached an accuracy of around 42% and a validation loss of .53.
+Lower than this learning rate though made the algorithm slower.
+The trend seemed as if it would continue, but within the 1000 batches it performed worse.
+This can be seen in the chart below:
+
+| Learning Rate | Maximum Accuracy | Maximum Loss |
+| ------------- | ---------------- | ---------------- |
+| 0.0001        | 25.0             | 0.068            |
+| 0.001         | 33.5             | 0.058            |
+| 0.01          | 45.0             | 0.51             |
+| 0.1           | 21.0             | 0.65             |
+
+![Validation Accuracy Relu ($lr = 0.1$)](./img/validation-accuracy-relu-lr-0.1.png)
+![Validation Loss Relu ($lr = 0.1$)](./img/validation-loss-relu-lr-0.1.png)
+
+![Validation Accuracy Relu ($lr = 0.01$)](./img/validation-accuracy-relu-lr-0.01.png)
+![Validation Loss Relu ($lr = 0.01$)](./img/validation-loss-relu-lr-0.01.png)
 
 
 # Part 3
