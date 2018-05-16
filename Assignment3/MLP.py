@@ -5,7 +5,7 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.autograd import Variable
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 class Net(nn.Module):
     def __init__(self):
@@ -103,27 +103,27 @@ def test():
     print('\nValidation set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         val_loss, correct, val_len, accuracy))
 
-def show_examples():
-    for (X_train, y_train) in train_loader:
-        print('X_train:', X_train.size(), 'type:', X_train.type())
-        print('y_train:', y_train.size(), 'type:', y_train.type())
-        break
-    for i in range(10):
-        plt.subplot(1,10,i+1)
-        plt.axis('off')
-        image = X_train[i,:,:,:].numpy()
-        plt.imshow(image.reshape(3,32,32).transpose(1,2,0))
-        plt.title('Class: '+str(y_train[i]))
+# def show_examples():
+#     for (X_train, y_train) in train_loader:
+#         print('X_train:', X_train.size(), 'type:', X_train.type())
+#         print('y_train:', y_train.size(), 'type:', y_train.type())
+#         break
+#     for i in range(10):
+#         plt.subplot(1,10,i+1)
+#         plt.axis('off')
+#         image = X_train[i,:,:,:].numpy()
+#         plt.imshow(image.reshape(3,32,32).transpose(1,2,0))
+#         plt.title('Class: '+str(y_train[i]))
 
-def plot_results():
-    plt.figure(figsize=(5,3))
-    plt.plot(np.arange(1,epochs+1), lossv)
-    plt.title('Validation Loss {} (Learning Rate = {})'.format(activation_func.title(), lr))
-
-    plt.figure(figsize=(5,3))
-    plt.plot(np.arange(1,epochs+1), accv)
-    plt.title('Validation Accuracy {} (Learning Rate = {})'.format(activation_func.title(), lr))
-    plt.show()
+# def plot_results():
+#     plt.figure(figsize=(5,3))
+#     plt.plot(np.arange(1,epochs+1), lossv)
+#     plt.title('Validation Loss {} (Learning Rate = {})'.format(activation_func.title(), lr))
+#
+#     plt.figure(figsize=(5,3))
+#     plt.plot(np.arange(1,epochs+1), accv)
+#     plt.title('Validation Accuracy {} (Learning Rate = {})'.format(activation_func.title(), lr))
+#     plt.show()
 
 def create_train_loader():
     loader = torch.utils.data.DataLoader(
@@ -156,7 +156,7 @@ if __name__ == '__main__':
     validation_loader = create_validation_loader()
     pltsize=1
     plt.figure(figsize=(10*pltsize, pltsize))
-    show_examples()
+    # show_examples()
     model = Net()
     if cuda:
         model.cuda()
@@ -167,4 +167,4 @@ if __name__ == '__main__':
         train(epoch)
         validate(lossv, accv)
     test()
-    plot_results()
+    # plot_results()
