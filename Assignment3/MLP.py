@@ -1,3 +1,10 @@
+# By Nathan Shepherd and Daniel Kato
+#
+# Instructions:
+# 1. Source env_3.5_pytorch
+# 2. Set parameters at the top of main
+# 3. Run with `python MLP.py`
+#
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
