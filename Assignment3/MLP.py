@@ -163,7 +163,7 @@ if __name__ == '__main__':
     validation_loader = create_validation_loader()
     # pltsize=1
     # plt.figure(figsize=(10*pltsize, pltsize))
-    show_examples()
+    # show_examples()
     model = Net()
     if cuda:
         model.cuda()
