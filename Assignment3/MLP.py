@@ -1,3 +1,10 @@
+# By Nathan Shepherd and Daniel Kato
+#
+# Instructions:
+# 1. Source the python3.5 environment
+# 2. Set parameters at the top of the main function
+# 3. run `python MLP.py`
+#
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -154,8 +161,8 @@ if __name__ == '__main__':
     kwargs = {'num_workers': 1, 'pin_memory': True} if cuda else {}
     train_loader = create_train_loader()
     validation_loader = create_validation_loader()
-    pltsize=1
-    plt.figure(figsize=(10*pltsize, pltsize))
+    # pltsize=1
+    # plt.figure(figsize=(10*pltsize, pltsize))
     # show_examples()
     model = Net()
     if cuda:
