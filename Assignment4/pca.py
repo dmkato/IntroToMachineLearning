@@ -24,10 +24,9 @@ def pca(data):
     Returns the eign vectors with the variances higher than threshold
     """
     mean = data.sum(axis=0) / data.shape[0]
-    sum_arr = [np.outer(x - mean, x - mean) for x in data]
-    cv_matrix = np.sum(sum_arr, axis=0) / data.shape[0]
+    cv_matrix = np.cov(data.T)
     e_values, e_vectors = la.eig(cv_matrix)
-    return e_values, e_vectors, mean
+    return e_values, e_vectors.T, mean
 
 def show_eignvectors(top_features):
     """
