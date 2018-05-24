@@ -77,6 +77,10 @@ def k_means(data, k):
     return means, SSEs
 
 def show_means(data, k):
+    """
+    Calculate k means for the dataset and show the resulting image of each mean.
+    Requires a call to plt.show()
+    """
     means, SSE = k_means(data, k=k)
     fig = plt.figure(figsize=(8, 8))
     columns = len(means)
@@ -86,6 +90,9 @@ def show_means(data, k):
         plt.imshow(img, cmap=plt.cm.Greys)
 
 def plot_SSE(data, k):
+    """
+    Calculates k means for the data and plots the SSE of the training sessions
+    """
     print("Plotting SSE")
     means, SSEs = k_means(data, k=k)
     x_ax = list(range(len(SSEs)))
@@ -96,6 +103,9 @@ def plot_SSE(data, k):
     plt.ylabel("SSE")
 
 def plot_model_selection(SSEs, k_max):
+    """
+    Plots each SSE against each value of k
+    """
     ks = list(range(2, k_max+1))
     plt.figure(figsize=(5,3))
     plt.plot(ks, SSEs, 'r')
@@ -104,6 +114,9 @@ def plot_model_selection(SSEs, k_max):
     plt.ylabel("SSE")
 
 def model_selection(data, k_max):
+    """
+    Runs k means for each k ranging from 2 to k_max and plots the results
+    """
     results = []
     for i in range(2, k_max+1):
         print(i)
