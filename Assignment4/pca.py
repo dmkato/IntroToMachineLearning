@@ -30,27 +30,49 @@ def pca(data):
 
 def show_eignvectors(top_features):
     """
-    Calculate k means for the dataset and show the resulting image of each mean.
+    Calculate and show eignvectors for top_features
     Requires a call to plt.show()
     """
     fig = plt.figure(figsize=(8, 8))
     columns = len(top_features)
-    for i, (val, vect) in enumerate(top_features):
+    for i, vect in enumerate(top_features):
         viewable_e_vect = np.array([i.real for i in vect])
         img = viewable_e_vect.reshape(28, 28)
         fig.add_subplot(1, columns, i+1)
         plt.imshow(img, cmap=plt.cm.Greys)
-    plt.show()
+
+def show_sig_images(imgs):
+    """
+    Calculate and show eignvectors for top_features
+    Requires a call to plt.show()
+    """
+    fig = plt.figure(figsize=(8, 8))
+    columns = len(imgs)
+    for i, raw_img in enumerate(imgs):
+        img = raw_img.reshape(28, 28)
+        fig.add_subplot(1, columns, i+1)
+        plt.imshow(img, cmap=plt.cm.Greys)
 
 def dimensionality_reduction(data, k):
     e_values, e_vectors, mean = pca(data)
-    arr = list(zip(e_values, e_vectors))
-    sorted_arr = sorted(arr, key=lambda i:i[0], reverse=True)
-    top_features = sorted_arr[:k]
-    for val, vect in top_features:
-        print(val)
-    show_eignvectors(top_features)
+    return e_vectors[:k]
+
+def reduce_dimensions(data, e_vectors):
+    return [[x.dot(v) for v in e_vectors] for x in data]
+
+def get_most_significant_examples(transformed_data, data):
+    idxs = []
+    for i in range(len(e_vectors)):
+        feature_i = [t[i] for t in transformed_data]
+        idxs += [np.argmax(feature_i)]
+    imgs = [data[i] for i in idxs]
+    return imgs
 
 if __name__ == "__main__":
     data = get_data("./unsupervised.txt")
-    dimensionality_reduction(data, 10)
+    e_vectors = dimensionality_reduction(data, 10)
+    show_eignvectors(e_vectors)
+    transformed_data = reduce_dimensions(data, e_vectors)
+    significant_imgs = get_most_significant_examples(transformed_data, data)
+    show_sig_images(significant_imgs)
+    plt.show()
