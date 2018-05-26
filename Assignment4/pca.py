@@ -19,11 +19,20 @@ def show_image(x):
     plt.imshow(x.reshape(28, 28), cmap=plt.cm.Greys)
     plt.show()
 
+def show_image(x):
+    """
+    Displays the first image in the data set
+    USES MATPLOTLIB
+    """
+    plt.imshow(x.reshape(28, 28), cmap=plt.cm.Greys)
+    plt.show()
+
 def pca(data):
     """
     Returns the eign vectors with the variances higher than threshold
     """
     mean = data.sum(axis=0) / data.shape[0]
+    show_image(mean)
     cv_matrix = np.cov(data.T)
     e_values, e_vectors = la.eig(cv_matrix)
     return e_values, e_vectors.T, mean
@@ -41,38 +50,48 @@ def show_eignvectors(top_features):
         fig.add_subplot(1, columns, i+1)
         plt.imshow(img, cmap=plt.cm.Greys)
 
-def show_sig_images(imgs):
+def show_sig_images(highs, lows):
     """
     Calculate and show eignvectors for top_features
     Requires a call to plt.show()
     """
     fig = plt.figure(figsize=(8, 8))
-    columns = len(imgs)
-    for i, raw_img in enumerate(imgs):
+    columns = len(highs)
+    for i, raw_img in enumerate(highs):
         img = raw_img.reshape(28, 28)
         fig.add_subplot(1, columns, i+1)
         plt.imshow(img, cmap=plt.cm.Greys)
+    plt.show()
+    fig = plt.figure(figsize=(8, 8))
+    for i, raw_img in enumerate(lows):
+        img = raw_img.reshape(28, 28)
+        fig.add_subplot(1, columns, i+1)
+        plt.imshow(img, cmap=plt.cm.Greys)
+    plt.show()
 
 def dimensionality_reduction(data, k):
     e_values, e_vectors, mean = pca(data)
+    print(e_values)
     return e_vectors[:k]
 
 def reduce_dimensions(data, e_vectors):
     return [[x.dot(v) for v in e_vectors] for x in data]
 
 def get_most_significant_examples(transformed_data, data):
-    idxs = []
+    high_idxs = []
+    low_idxs = []
     for i in range(len(e_vectors)):
         feature_i = [t[i] for t in transformed_data]
-        idxs += [np.argmax(feature_i)]
-    imgs = [data[i] for i in idxs]
-    return imgs
+        high_idxs += [np.argmax(feature_i)]
+        low_idxs += [np.argmin(feature_i)]
+    highs = [data[i] for i in high_idxs]
+    lows = [data[i] for i in low_idxs]
+    return highs, lows
 
 if __name__ == "__main__":
     data = get_data("./unsupervised.txt")
     e_vectors = dimensionality_reduction(data, 10)
     show_eignvectors(e_vectors)
     transformed_data = reduce_dimensions(data, e_vectors)
-    significant_imgs = get_most_significant_examples(transformed_data, data)
-    show_sig_images(significant_imgs)
-    plt.show()
+    highs, lows = get_most_significant_examples(transformed_data, data)
+    show_sig_images(highs, lows)

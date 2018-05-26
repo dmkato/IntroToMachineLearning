@@ -30,3 +30,35 @@ These three sets represent a small sampling of the averages with 10 clusters.
 
 
 # Part 2
+
+Our top ten eigenvectors were:
+
+| Eigenvectors   |
+| -------------- |
+| 3.43399517e+05 |
+| 3.13395931e+05 |
+| 2.59943933e+05 |   
+| 1.88455444e+05 |
+| 1.42631234e+05 |   
+| 1.32488872e+05 |
+| 9.64363320e+04 |   
+| 9.13557562e+04 |
+| 8.17497999e+04 |   
+| 7.54136824e+04 |
+
+The mean, being a composite of all of the digits in the dataset, was a indistinct blob, but it seemed to look the most like a 3. The background was white just like all of the data points.
+
+![Mean Image](img/mean_vector.png)
+
+The resulting eigenvector images were similar to the mean vector image, but there seemed to be one black digit and one white digit while the background was grey. This is because the eigenvector defines an n-dimensional axis for a new derived feature which was chosen as having the highest variance.
+
+\pagebreak
+
+![Top Ten Eigen Vectors](img/top_ten_eigenvectors.png)
+
+The largest datapoint for each of the eigenvectors ended up being the dark digit on the eigenvector, and the smallest for each eigenvector was the white digit. These are the points furthest away from the axis defined by the eigenvector
+
+![Largest x For Each Eigenvector](img/largest_x_for_each_eigenvector.png)
+
+
+![Smallest x For Each Eigenvector](img/smallest_x_for_each_eigenvector.png)
