@@ -1,4 +1,11 @@
-import matplotlib.pyplot as plt
+# By Daniel Kato and Nathan Shepherd
+#
+# Instructions:
+#  1. Place data file directly in folder with python files
+#  2. Source the python3.5 venv by running `source /scratch/cs434spring2018/env_3.5/bin/activate`
+#  3. Run k means with command `python3 k_means.py`
+#
+# import matplotlib.pyplot as plt
 import numpy as np
 import numpy.linalg as la
 
@@ -11,13 +18,13 @@ def get_data(filepath):
     data_set = [np.array(l, dtype=float) for l in lines]
     return np.array(data_set)
 
-def show_image(x):
-    """
-    Displays the first image in the data set
-    USES MATPLOTLIB
-    """
-    plt.imshow(x.reshape(28, 28), cmap=plt.cm.Greys)
-    plt.show()
+# def show_image(x):
+#     """
+#     Displays the first image in the data set
+#     USES MATPLOTLIB
+#     """
+#     plt.imshow(x.reshape(28, 28), cmap=plt.cm.Greys)
+#     plt.show()
 
 def add_x_to_nearest_cluster(x, clusters, means):
     """
@@ -76,42 +83,42 @@ def k_means(data, k):
         SSEs += [get_SSE(clusters, means)]
     return means, SSEs
 
-def show_means(data, k):
-    """
-    Calculate k means for the dataset and show the resulting image of each mean.
-    Requires a call to plt.show()
-    """
-    means, SSE = k_means(data, k=k)
-    fig = plt.figure(figsize=(8, 8))
-    columns = len(means)
-    for i, mean in enumerate(means):
-        img = mean.reshape(28, 28)
-        fig.add_subplot(1, columns, i+1)
-        plt.imshow(img, cmap=plt.cm.Greys)
+# def show_means(data, k):
+#     """
+#     Calculate k means for the dataset and show the resulting image of each mean.
+#     Requires a call to plt.show()
+#     """
+#     means, SSE = k_means(data, k=k)
+#     fig = plt.figure(figsize=(8, 8))
+#     columns = len(means)
+#     for i, mean in enumerate(means):
+#         img = mean.reshape(28, 28)
+#         fig.add_subplot(1, columns, i+1)
+#         plt.imshow(img, cmap=plt.cm.Greys)
 
-def plot_SSE(data, k):
-    """
-    Calculates k means for the data and plots the SSE of the training sessions
-    """
-    print("Plotting SSE")
-    means, SSEs = k_means(data, k=k)
-    x_ax = list(range(len(SSEs)))
-    plt.figure(figsize=(5,3))
-    plt.plot(x_ax, SSEs, 'r')
-    plt.title("SSE")
-    plt.xlabel("Iteration")
-    plt.ylabel("SSE")
+# def plot_SSE(data, k):
+#     """
+#     Calculates k means for the data and plots the SSE of the training sessions
+#     """
+#     print("Plotting SSE")
+#     means, SSEs = k_means(data, k=k)
+#     x_ax = list(range(len(SSEs)))
+#     plt.figure(figsize=(5,3))
+#     plt.plot(x_ax, SSEs, 'r')
+#     plt.title("SSE")
+#     plt.xlabel("Iteration")
+#     plt.ylabel("SSE")
 
-def plot_model_selection(SSEs, k_max):
-    """
-    Plots each SSE against each value of k
-    """
-    ks = list(range(2, k_max+1))
-    plt.figure(figsize=(5,3))
-    plt.plot(ks, SSEs, 'r')
-    plt.title("Model Selection")
-    plt.xlabel("k")
-    plt.ylabel("SSE")
+# def plot_model_selection(SSEs, k_max):
+#     """
+#     Plots each SSE against each value of k
+#     """
+#     ks = list(range(2, k_max+1))
+#     plt.figure(figsize=(5,3))
+#     plt.plot(ks, SSEs, 'r')
+#     plt.title("Model Selection")
+#     plt.xlabel("k")
+#     plt.ylabel("SSE")
 
 def model_selection(data, k_max):
     """
@@ -129,5 +136,5 @@ if __name__ == "__main__":
     data = get_data("./unsupervised.txt")
     plot_SSE(data, k=2)
     model_selection(data, k_max=10)
-    show_means(data, k=10)
-    plt.show()
+    # show_means(data, k=10)
+    # plt.show()
