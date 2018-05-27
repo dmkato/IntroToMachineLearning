@@ -2,7 +2,7 @@
 #
 # Instructions:
 #  1. Place data file directly in folder with python files
-#  2. Source the python3.5 venv by running `source /scratch/cs434spring2018/env_3.5/bin/activate`
+#  2. Source the python3.5 venv by running `source /scratch/cs434spring2018/env_3.5_new/bin/activate`
 #  3. Run k means with command `python3 k_means.py`
 #
 # import matplotlib.pyplot as plt
@@ -130,11 +130,12 @@ def model_selection(data, k_max):
         k_results = [k_means(data, k=i) for c in range(10)]
         SSEs = [r[1][0] for r in k_results]
         results += [min(SSEs)]
-    plot_model_selection(results, k_max)
+    print(results)
+    # plot_model_selection(results, k_max)
 
 if __name__ == "__main__":
     data = get_data("./unsupervised.txt")
-    plot_SSE(data, k=2)
+    # plot_SSE(data, k=2)
     model_selection(data, k_max=10)
     # show_means(data, k=10)
     # plt.show()
