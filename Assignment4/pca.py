@@ -2,7 +2,7 @@
 #
 # Instructions:
 #  1. Place data file directly in folder with python files
-#  2. Source the python3.5 venv by running `source /scratch/cs434spring2018/env_3.5/bin/activate`
+#  2. Source the python3.5 venv by running `source /scratch/cs434spring2018/env_3.5_new/bin/activate`
 #  3. Run pca with command `python3 pca.py`
 #
 # import matplotlib.pyplot as plt
@@ -78,7 +78,8 @@ def pca(data):
 
 def dimensionality_reduction(data, k):
     e_values, e_vectors, mean = pca(data)
-    print(e_values)
+    print('Top Ten Eigenvalues:')
+    print(e_values[:10])
     return e_vectors[:k]
 
 def reduce_dimensions(data, e_vectors):
