@@ -6,6 +6,7 @@ class Data:
     Stores a data frame and allows data to be transformed into instances.
     """
     def __init__(self, type=None, individual_num=None):
+        self.type = type
         self.individual_num = individual_num
         self.frame, self.idxs = self.get_data(type)
 
@@ -35,10 +36,24 @@ class Data:
 
         return data, idxs
 
+    def test_data(self):
+        test_arr = []
+        filenames = ['data/test/sampleinstance_{}.csv'.format(n) for n in range(1, 6)]
+        with open('data/test/groundtruth.csv.xls', 'r') as f:
+            ys = [int(l.strip()) for l in f.readlines()]
+        for file, y in zip(filenames, ys):
+            with open(file, 'r') as f:
+                data = np.array([l.strip().split(',') for l in f.readlines()], dtype=float)
+                test_arr += [list(data.flatten()) + [y]]
+
+        return test_arr, None
+
     def get_data(self, type):
         """
         Returns data with index prepended and time converted
         """
+        if type == "test":
+            return self.test_data()
         all_data = []
         all_idxs = []
         data_files, idx_files = self.get_file_names(type)
@@ -75,6 +90,9 @@ class Data:
         """
         Converts data to a set of instances where each instance is a set of data that spans 30 consecutive minutes. Each instance overlaps with the last.
         """
-        p = [self.instance_at_idx(idx) for idx, _
-                in enumerate(self.idxs) if self.sufficient_data(idx)]
+        if self.type == "test":
+            p = self.frame
+        else:
+            p = [self.instance_at_idx(idx) for idx, _
+                 in enumerate(self.idxs) if self.sufficient_data(idx)]
         return p
