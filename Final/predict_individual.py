@@ -10,5 +10,5 @@ def parse_args():
 if __name__ == "__main__":
     individual_num = parse_args()
     train_data = Data("individual", individual_num).to_instances()
-    for i in train_data[:5]:
+    for i in train_data[:6]:
         print(i)

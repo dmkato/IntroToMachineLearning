@@ -66,7 +66,9 @@ class Data:
         Returns instance for the previous 30 mins
         """
         rows = self.frame[idx-6:idx+1]
-        f = list(np.asarray(rows.flatten()))
+        rows_without_y = [r[:-1] for r in rows]
+        labeled_rows = np.array(rows_without_y)
+        f = list(labeled_rows.flatten()) + [rows[-1][-1]]
         return f
 
     def to_instances(self):
