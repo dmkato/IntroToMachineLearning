@@ -23,12 +23,12 @@ class Data:
         """
         if type =="general":
             subj_nums = [1, 4, 6, 9]
-            data = ['data/general/Subject_{}.csv'.format(n) for n in subj_nums]
-            idxs = ['data/general/list_{}.csv'.format(n) for n in subj_nums]
+            data = ['data/general/Subject_{}.csv.xls'.format(n) for n in subj_nums]
+            idxs = ['data/general/list_{}.csv.xls'.format(n) for n in subj_nums]
         elif type == "individual":
             num = self.individual_num
-            data = ['data/individual/Subject_{}_part1.csv'.format(num)]
-            idxs = ['data/individual/list{}_part1.csv'.format(num)]
+            data = ['data/individual/Subject_{}_part1.csv.xls'.format(num)]
+            idxs = ['data/individual/list{}_part1.csv.xls'.format(num)]
         else:
             print("Error type not 'general' or 'individual'")
             exit()
