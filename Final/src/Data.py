@@ -7,8 +7,10 @@ class Data:
     """
     def __init__(self, type=None, individual_num=None):
         self.type = type
+        self.subsample_rate = 0.05   # Only keep 1/10 of negative instances
         self.individual_num = individual_num
         self.frame, self.idxs = self.get_data(type)
+
 
     def time_to_hr(self, timestamp):
         """
@@ -17,6 +19,7 @@ class Data:
         """
         date, time = timestamp.split('T')
         return [time[:2]]
+
 
     def get_file_names(self, type):
         """
@@ -36,7 +39,11 @@ class Data:
 
         return data, idxs
 
+
     def test_data(self):
+        """
+        Gets test data
+        """
         test_arr = []
         filenames = ['data/test/sampleinstance_{}.csv'.format(n) for n in range(1, 6)]
         with open('data/test/groundtruth.csv.xls', 'r') as f:
@@ -47,6 +54,7 @@ class Data:
                 test_arr += [list(data.flatten()) + [y]]
 
         return test_arr, None
+
 
     def get_data(self, type):
         """
@@ -67,6 +75,7 @@ class Data:
             all_idxs += idxs
         return np.array(all_data, dtype=float), all_idxs
 
+
     def sufficient_data(self, idx):
         """
         Returns true if 30 minutes of continuous data is present
@@ -75,6 +84,7 @@ class Data:
         e_range = list(range(self.idxs[idx] - 6, self.idxs[idx]+1))
         a_range = self.idxs[idx - 6:idx+1]
         return e_range == a_range
+
 
     def instance_at_idx(self, idx):
         """
@@ -86,13 +96,33 @@ class Data:
         f = list(labeled_rows.flatten()) + [rows[-1][-1]]
         return f
 
+
+    def subsample(self, instances):
+        """
+        Removes every subsample_rate negative instance.
+        Without subsampling, general data creates 21723 instances.
+        """
+        removed_count = 0
+        r_rate = int(1 / self.subsample_rate)
+
+        for i in instances:
+            if i[-1] == 0:
+                if removed_count == r_rate:
+                    removed_count = 0
+                else:
+                    instances.remove(i)
+                    removed_count += 1
+        return instances
+
+
     def to_instances(self):
         """
         Converts data to a set of instances where each instance is a set of data that spans 30 consecutive minutes. Each instance overlaps with the last.
         """
         if self.type == "test":
-            p = self.frame
+            instances = self.frame
         else:
-            p = [self.instance_at_idx(idx) for idx, _
+            raw_instances = [self.instance_at_idx(idx) for idx, _
                  in enumerate(self.idxs) if self.sufficient_data(idx)]
-        return p
+            instances = self.subsample(raw_instances)
+        return instances

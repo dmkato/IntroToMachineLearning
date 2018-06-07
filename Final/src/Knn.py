@@ -25,6 +25,7 @@ class Knn:
         print('Accuracy:', (len(test_set) - test_err) / len(test_set))
         return preds
 
+
 def get_data(type):
     with open('./knn_{}.csv'.format(type), 'r') as f:
         lines = [l.strip().split(',') for l in f.readlines()]
@@ -73,7 +74,7 @@ def batch_knn(data_set):
 
 def testing_error(test_set, preds):
     c = 0
-    for t, (c, p) in zip(test_set, preds):
+    for t, (s, p) in zip(test_set, preds):
         if t[-1] != p:
             c += 1
     return c
