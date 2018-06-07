@@ -5,9 +5,9 @@ class Data:
     """
     Stores a data frame and allows data to be transformed into instances.
     """
-    def __init__(self, type=None, individual_num=None):
+    def __init__(self, type=None, subsample_rate=1, individual_num=None):
         self.type = type
-        self.subsample_rate = 0.015   # Only keep 1/50 of negative instances
+        self.subsample_rate = subsample_rate  
         self.individual_num = individual_num
         self.frame, self.idxs = self.get_data(type)
 

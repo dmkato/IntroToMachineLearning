@@ -8,7 +8,7 @@ import sys
 import operator
 import numpy as np
 
-class Knn:
+class KNN:
     def __init__(self):
         self.optimal_k = None
         self.train_data = None
@@ -16,8 +16,7 @@ class Knn:
     def train(self, train_data):
         self.norm_vect = get_norm_vect(train_data)
         self.train_set = normalize(train_data, self.norm_vect)
-        self.optimal_k = 7 # model_selection(self.train_set)
-        print('Optimal K:', self.optimal_k)
+        self.optimal_k = model_selection(self.train_set)
 
     def test(self, test_data):
         test_set = normalize(test_data, self.norm_vect)
@@ -91,7 +90,7 @@ def test_knn_with_k(train_set, k):
 def model_selection(train_set):
     results = []
     l = len(train_set)
-    for k in range(1, 30):
+    for k in range(1, 10):
         print('k = {}'.format(k))
         results += [test_knn_with_k(train_set, k)]
         print('Accuracy:', (l - results[-1][0])/ l)
