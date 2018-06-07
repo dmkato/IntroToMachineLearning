@@ -7,7 +7,7 @@ class Data:
     """
     def __init__(self, type=None, individual_num=None):
         self.type = type
-        self.subsample_rate = 0.05   # Only keep 1/10 of negative instances
+        self.subsample_rate = 0.015   # Only keep 1/50 of negative instances
         self.individual_num = individual_num
         self.frame, self.idxs = self.get_data(type)
 
@@ -97,6 +97,18 @@ class Data:
         return f
 
 
+    def should_keep(self, counter):
+        """
+        Returns true if we should keep the example given the subsampling rate
+        """
+        if i[-1] == 0:
+            if removed_count == r_rate:
+                removed_count = 0
+            else:
+                instances.remove(i)
+                removed_count += 1
+
+
     def subsample(self, instances):
         """
         Removes every subsample_rate negative instance.
@@ -104,15 +116,17 @@ class Data:
         """
         removed_count = 0
         r_rate = int(1 / self.subsample_rate)
+        ss_instances = []
 
         for i in instances:
-            if i[-1] == 0:
-                if removed_count == r_rate:
-                    removed_count = 0
-                else:
-                    instances.remove(i)
-                    removed_count += 1
-        return instances
+            if i[-1] == 0 and removed_count != r_rate:
+                removed_count += 1
+                continue
+            else:
+                ss_instances += [i]
+                removed_count = 0
+
+        return ss_instances
 
 
     def to_instances(self):

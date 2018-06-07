@@ -16,13 +16,14 @@ class Knn:
     def train(self, train_data):
         self.norm_vect = get_norm_vect(train_data)
         self.train_set = normalize(train_data, self.norm_vect)
-        self.optimal_k = 3
+        self.optimal_k = 7 # model_selection(self.train_set)
+        print('Optimal K:', self.optimal_k)
 
     def test(self, test_data):
         test_set = normalize(test_data, self.norm_vect)
         preds = [knn(self.train_set, test[:-1], self.optimal_k) for test in test_set]
         test_err = testing_error(test_set, preds)
-        print('Accuracy:', (len(test_set) - test_err) / len(test_set))
+        print('Test Accuracy:', (len(test_set) - test_err) / len(test_set))
         return preds
 
 
@@ -85,13 +86,14 @@ def test_knn_with_k(train_set, k):
     for idx, test in enumerate(train_set):
         loo_set = train_set[:idx] + train_set[idx+1:]
         preds += [knn(loo_set, test[:-1], k)]
-    return testing_error(train_set, preds)
+    return testing_error(train_set, preds), k
 
 def model_selection(train_set):
     results = []
-    for k in range():
+    l = len(train_set)
+    for k in range(1, 30):
         print('k = {}'.format(k))
         results += [test_knn_with_k(train_set, k)]
-        print()
-    best_k = min([(r, i) for i, r in enumerate(results)])
+        print('Accuracy:', (l - results[-1][0])/ l)
+    best_k = min([(r, k) for r, k in results])
     return best_k[1]
