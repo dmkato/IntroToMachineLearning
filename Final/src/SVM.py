@@ -2,7 +2,7 @@ from sklearn import svm
 
 class SVM:
     def __init__(self):
-        self.clf = svm.LinearSVC(C=0.07, kernel)
+        self.clf = svm.SVC(C=0.07, kernel='poly', degree=2)
 
     def train(self, data):
         X = [x[:-1] for x in data]
