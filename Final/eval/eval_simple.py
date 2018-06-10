@@ -26,7 +26,7 @@ def read_and_check(pred, gold):
                 raise 'each row in gold must contain only one value; label'
             g_.append((str(doi), int(do[0].strip())))
         f.close()
-
+    
     with open(pred, 'r') as f:
         data = [row for row in csv.reader(f.read().splitlines())]
         for doi, do in enumerate(data):
@@ -70,13 +70,28 @@ def get_f1(g_, p_):
             else:
                 tn += 1
 
-    p = round(tp / (tp + fp), 3)
-    r = round(tp / (tp + fn), 3)
-    f1 = round(2 * (r * p) / (r + p), 3)
-    acc = round((tp + tn) / (tp + fp + fn + tn), 3)
+    if (tp + fp) == 0:
+        p = 1.0
+    else:
+        p = round(tp / (tp + fp), 3)
 
+    if (tp + fn) == 0:
+        r = 1.0
+    else:
+        r = round(tp / (tp + fn), 3)
+
+    if (r + p) == 0.0:
+        f1 = 0.0
+    else:
+        f1 = round(2 * (r * p) / (r + p), 3)
+
+    if (tp + fp + fn + tn) == 0:
+        acc = 0.0
+    else:
+        acc = round((tp + tn) / (tp + fp + fn + tn), 3)
+    
     return acc, p, r, f1
-
+    
 def get_auc(g_, p_):
     #this function computes teh area under ROC
     gold_negs = []
@@ -103,12 +118,12 @@ def get_auc(g_, p_):
 def evaluate(gp_data):
     #this function computes evaluations for one submission
     set_id, gold, pred, g_, p_ = gp_data
-
+    
     #print('\nset: %s'%set_id)
     a, p, r, f1 = get_f1(g_, p_)
     auc = get_auc(g_, p_)
-    print('F1: %s \t AUC: %s'%\
-        (str(round(f1, 3)), str(round(auc, 3))))
+    print('Precision: %s \t Recall: %s \t F1: %s \t AUC: %s'%\
+        (str(round(p, 3)), str(round(r, 3)), str(round(f1, 3)), str(round(auc, 3))))
     return a, p, r, f1, auc
 
 def main(argv):
@@ -118,7 +133,7 @@ def main(argv):
     result = 'result.csv'
     __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
+    
     try:
        opts, args = getopt.getopt(argv,"h:p:g:o:",["ifile=","ofile="])
     except getopt.GetoptError:
@@ -150,7 +165,7 @@ def main(argv):
 
     out_w.write('{0[0]:<25}{0[1]:<30}{0[2]:<10}{0[3]:<10}{0[4]:>10}{0[5]:>10}{0[6]:>10}'.format(['sub', 'set', \
             'A', 'P', 'R', 'F1', 'AUC']) + '\n')
-
+    
     for out in outs:
         out_w.write('{0[0]:<25}{0[1]:<30}{0[2]:<10}{0[3]:<10}{0[4]:>10}{0[5]:>10}{0[6]:>10}'.format(out) + '\n')
 
@@ -163,3 +178,5 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+
+
