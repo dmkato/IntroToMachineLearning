@@ -104,4 +104,68 @@ Purity: sensitive to c'
 
 25. F1 Measure is the average of the precision and the recall of a prediction. Precision is the number of true positives divided by number of true and false positives predicted. Recall is the number of true positives divided by the number of actual positives in the ground truth.
 
-26. 
+26. If we have a high cost for false positives and a low cost for false negatives, the favored ROC curve would be the one has a low false positive rate given a higher true positive rate. If we have a high cost for false negatives, we would want the curve that has the highest true positive rate.
+
+27. Distance only takes distance into account, but density takes the density of the neighbors into account making the outlier decision dependent on the specific neighborhood the point is closest to.
+
+## MDP
+
+28. An MDP is composed of a finite set of states S, a finite set of actions A, a transition function T(s, a, s') = P(s'|s,a), and a reward function R(s).
+
+29. The Markov property is the fact that actions do not depend on the history of the agent, only the current state. (Like a Markov chain)
+
+30. A policy if a mapping of states to actions. It is what the MDP returns.
+
+31. U(s), the utility state of s, measure the long term reward for being in state s, where the reward R(s) measure only the immediate reward of being in state s.
+
+32. 1) An MDP agent for tic-tac-toe would be comprised of:
+        State space: All possible configurations of the tic-tac-toe board. A board is comprised of 9 spots each which can be black, X, or O, giving us 3^9 states.
+        Action space: All blank spaces in the current state can be acted upon.
+        Transition Function: T(s, a, s') = P(s'|s,a)
+                                         = 1 / (E-1)
+        Reward: Any space adjacent to or inline with another space with the same tile.
+    2) Because at each state, a player can put a tile on any of the 9 open spaces, and there are 3^9 states, the table would be 9 * 3^9 = 177,147
+    3) Because the player is no longer acting randomly, the transition model is no longer uniform as the player will have a higher likelihood of placing a tile in certain positions at certain times.
+
+33. a)
+        U_0(1) = -1, U_0(2) = -2, U_0(3) = 0; // Rewards
+        U_1(1) = U_0(1) + discount * max(prob2 * U_0(2) + probStay * U_0(1); prob3 * U_0(3) + probStay * U_0(1))
+
+    b)
+
+34. Passive learning: Agent has a fixed policy and is trying to learn utility of each state by observing the world.
+    Active learning: Agent tries to find an optimal policy by acting in the world.
+
+35. Exploration: Try some possibly random sequences of actions to improve knowledge of the environment; Kinda like training
+    Exploitation: Execute an action that is learned to have a high payoff; Kinda like testing
+
+36. Utility provides the max Q value from the state times the discount. Q values can provide us with model-less learning because we are only after the max Q values at each state
+
+37. Adaptive Dynamic Programming uses O(|A||S|^2) while Q learning uses O(|A||S|)
+
+## Ensemble
+
+38. Unpruned decision trees have a lot of variance due to leaf nodes not being entirely accurate. This makes it a good candidate for bagging because bagging can reduce the variance of a model
+
+39. Bootstrapping works by taking random, un-replaced samples over a normal distribution of data points from the dataset to compose a new dataset. Because each model is trained on a different dataset, the classifier will be different.
+
+40. The only difference between a random forest and a bagged decision tree is in a random forest, only a random subset of features is considered at each node when making a split.
+
+41. Bagging: Uses an ensemble of random samples from the dataset
+             Reduces variance
+             Robust against noise and outliers
+    Boosting: Iteratively improved a model by weighting its mistakes (modify data distribution)
+              Reduces bias and variance
+              Can hurt performance with noise and outliers
+
+42. If the model correctly classifies an example, it's weight is decreased by e^-a_t, and if it incorrectly classifies an example it's weight is increased by e^a_t.
+
+43. ^
+
+44. No, sampling reduces the impact of noise and outliers.
+
+45. Yes, overtime outliers will receive very high weights, making them a priority and heavily skewing your models.
+
+46. No, Bagging is safe and does hurt performance.
+
+47. Yes, overfitting to outliers.

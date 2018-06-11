@@ -3,7 +3,7 @@ from sklearn.ensemble import IsolationForest
 
 rng = np.random.RandomState(420)
 
-class isolationForest:
+class IsoForest:
     def __init__(self):
         self.clf = IsolationForest(max_samples=1000, random_state=rng, contamination=0.05)
 

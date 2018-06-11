@@ -1,14 +1,8 @@
-# By Daniel Kato and Nathan Shepherd
-#
-# Instructions:
-#  1. Place data files directly in folder with python files
-#  2. Source the python3.5 venv by running `source /scratch/cs434spring2018/env_3.5/bin/activate`
-#  3. Run knn with command `python3 knn.py`
 import sys
 import operator
 import numpy as np
 
-class KNN:
+class Knn:
     def __init__(self):
         self.optimal_k = None
         self.train_data = None

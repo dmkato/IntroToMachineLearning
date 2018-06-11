@@ -1,7 +1,9 @@
 import sys
 from src.Data import Data
-from src.KNN import KNN
-from src.SVM import SVM
+from src.Knn import Knn
+from src.Svm import Svm
+from src.NeuralNet import NeuralNet
+from src.IsoForest import IsoForest
 
 def parse_args(args):
     """
@@ -11,7 +13,9 @@ def parse_args(args):
         return args[0], None
     elif (len(args) == 2 and args[0] == "individual"):
         return args[0], args[1]
-    print("Usage: python3 predict <type: general, individual> <individual#: 2, 7>")
+    print("Usage: python3 predict <type> <individual #>")
+    print("   type: general, individual")
+    print("   individual #: 2, 7>")
     exit()
 
 
@@ -54,7 +58,7 @@ def partition_data(data):
 
 
 if __name__ == "__main__":
-    model = SVM
+    model = NeuralNet
     type, i_num = parse_args(sys.argv[1:])
     data = Data(type, i_num).to_instances()
     train_data, test_data = partition_data(data)

@@ -1,6 +1,6 @@
 from sklearn import svm
 
-class SVM:
+class Svm:
     def __init__(self):
         self.clf = svm.SVC(C=0.07, kernel='poly', degree=2)
 
