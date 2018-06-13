@@ -1,33 +1,65 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{listings}
+\lstset{language=Python}
 %\usepackage[colorinlistoftodos]{todonotes}
 
-\title{CS434 Final Project Report (3-page limit)}
-\author{Your names}
-\date{}
+\title{CS434 Final Project Report}
+\author{Daniel Kato & Nathan Shepherd}
+\date{2018-06-13}
+
 \begin{document}
+
 \maketitle
+
 \section{Feature formulation and preprocessing}
-\subsection{Features} What are the features you feed to your learning algorithm? Did you simply flatten the 7 rows into a vector for features? Did you transform or aggregate the given data to engineer your own features?
+\subsection{Features} What are the features you feed to your learning algorithm? Did you simply flatten the 7 rows into a vector for features? Did you transform or aggregate the given data to engineer your own features?\\
+
+For all of the algorithms used we simply used the flattened 7 rows to predict the event.
+We used the features provided, and did not use any methods to increase the dimension of the features.
+For both the K-Nearest Neighbor and the Isolation Forest algorithms, we normalized the data, to reduce noise.
+% I'm not really sure what else we did, we didn't really change the incoming data to much, feature-wise.
 
 \subsection{Preprocessing}
-Did you pre-process your data in any way? This can be for the purpose of reducing dimension, or reducing noise, or balancing the class distribution. Be clear about what you exactly did. The criterion is to allow others to replicate your works.
+Did you pre-process your data in any way? This can be for the purpose of reducing dimension, or reducing noise, or balancing the class distribution. Be clear about what you exactly did. The criterion is to allow others to replicate your works.\\
+
+For preprocessing our data, we focused on the disparity of normal data to anomalous data.
+All of the algorithms use subsampling of the test data, to increase the rate of actual events.
+For the Isolation Forest, we only trained it on the normal non-event data, so it would detect the positive events as an anomaly.
+For our subsampling, we used this simple line:
+\begin{lstlisting}
+self.subsample_rate = 0.015 if type == 'general' else 0.1
+\end{lstlisting}
+The difference between the general and individual subsampling rates is because of the sheer size of the general data.
+It should be noted that our subsampling skips over any hypoglycemic events, because these are the rare ones.
 
 \section{Learning algorithms}
 \subsection{Algorithms explored}
-Provide a list of learning algorithms that you explored for this project. For each algorithm, briefly justify your rationale for choosing this algorithm.
+Provide a list of learning algorithms that you explored for this project. For each algorithm, briefly justify your rationale for choosing this algorithm.\\
+% We didn't really explore any other algos? Maybe PCA,
+\begin{itemize}
+  \item KNN: We used this algorithm on the basis that the hypoglycemic would form a cluster.
+  This was used only on the general data.
+  \item Isolation Forest: This algorithm was chosen because it can be used a small amount of features to find anomalous data.
+  Because there are so many more normal events than hypoglycemic events, we thought that the hypoglycemic events could be found as anomalies, and predicted by how strong of an outlier they were.  We used it just for the individual data.
+  \item SVM:
+  \item Neural Net:
+\end{itemize}
+
 \subsection{Final models}
-What are the final models that produced your submitted test predictions?
+What are the final models that produced your submitted test predictions?\\
 
 \section{Parameter Tuning and Model Selection }
 \subsection{Parameter Tuning}
-What parameters did you tune for your models? How do you perform the parameter tuning?
+What parameters did you tune for your models? How do you perform the parameter tuning?\\
+
 
 \subsection{Model selection}
-How did you decide which models to use to produce the final predictions?  Do you use cross-validation or hold-out for model selection? When you split the data for validation, is it fully random or special consideration went into forming the folds? What criterion is used to select the models?
+How did you decide which models to use to produce the final predictions?  Do you use cross-validation or hold-out for model selection? When you split the data for validation, is it fully random or special consideration went into forming the folds? What criterion is used to select the models?\\
+
 
 \section{Results}
-Do you have any internal evaluation results you want to report?
+Do you have any internal evaluation results you want to report?\\
 
 \end{document}
