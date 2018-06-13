@@ -5,7 +5,8 @@ class Data:
     """
     Stores a data frame and allows data to be transformed into instances.
     """
-    def __init__(self, type=None, individual_num=None):
+    def __init__(self, type=None, individual_num=None, real=False):
+        self.real = real
         self.type = type
         self.subsample_rate = 0.015 if type == 'general' else 0.1
         self.individual_num = individual_num
@@ -25,7 +26,7 @@ class Data:
         """
         Returns 2 arrays: one for the data files, and one for the idx files
         """
-        if type =="general":
+        if type == "general":
             subj_nums = [1, 4, 6, 9]
             data = ['data/general/Subject_{}.csv.xls'.format(n) for n in subj_nums]
             idxs = ['data/general/list_{}.csv.xls'.format(n) for n in subj_nums]
@@ -34,15 +35,14 @@ class Data:
             data = ['data/individual/Subject_{}_part1.csv.xls'.format(num)]
             idxs = ['data/individual/list{}_part1.csv.xls'.format(num)]
         else:
-            print("Error type not 'general' or 'individual'")
-            exit()
+            raise ValueError("Error type not 'general' or 'individual'")
 
         return data, idxs
 
 
     def test_data(self):
         """
-        Gets test data
+        Formats test data
         """
         test_arr = []
         filenames = ['data/test/sampleinstance_{}.csv'.format(n) for n in range(1, 6)]
@@ -56,12 +56,10 @@ class Data:
         return test_arr, None
 
 
-    def get_data(self, type):
+    def general_data(self, type):
         """
-        Returns data with index prepended and time converted
+        Formats general and individual data
         """
-        if type == "test":
-            return self.test_data()
         all_data = []
         all_idxs = []
         data_files, idx_files = self.get_file_names(type)
@@ -74,6 +72,60 @@ class Data:
             all_data += hr_data
             all_idxs += idxs
         return np.array(all_data, dtype=float), all_idxs
+
+
+    def format_pred_data(self, data):
+        """
+        Returns pred data formatted like the test data
+        """
+        n = 7
+        f_data = []
+        for row in data:
+            features = np.asarray([row[i:i+n] for i in range(0, len(row), n)])
+            f_data += [features.T.flatten()]
+        return f_data
+
+
+    def get_pred_filenames(self, type):
+        """
+        Gets the appropriate file for the given type and individual number
+        """
+        if type == "general":
+            fn = "data/predict/general_test_instances.csv.xls"
+        elif type == "individual" and self.individual_num == '2':
+            fn = "data/predict/subject2_instances.csv.xls"
+        elif type == "individual" and self.individual_num == '7':
+            fn = "data/predict/subject7_instances.csv.xls"
+        else:
+            raise ValueError("Error type not 'general' or 'individual'")
+        return fn
+
+
+    def predict_data(self, type):
+        """
+        Formats predict data
+        """
+        arr = []
+        file = self.get_pred_filenames(type)
+        with open(file, 'r') as f:
+            data = np.array([l.strip().split(',') for l in f.readlines()], dtype=float)
+            arr += self.format_pred_data(data)
+
+        return arr, None
+
+
+    def get_data(self, type):
+        """
+        Returns data with index prepended and time converted
+        """
+        if self.real == True:
+            return self.predict_data(type)
+        elif type == "test":
+            return self.test_data()
+        elif type in ['general', 'individual']:
+            return self.general_data(type)
+        else:
+            raise ValueError("Incorrect data type")
 
 
     def sufficient_data(self, idx):
@@ -133,7 +185,7 @@ class Data:
         """
         Converts data to a set of instances where each instance is a set of data that spans 30 consecutive minutes. Each instance overlaps with the last.
         """
-        if self.type == "test":
+        if self.type == "test" or self.real == True:
             instances = self.frame
         else:
             raw_instances = [self.instance_at_idx(idx) for idx, _

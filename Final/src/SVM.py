@@ -23,3 +23,12 @@ class Svm:
         y = [x[-1] for x in data]
         p = zip(self.clf.decision_function(X), self.clf.predict(X))
         return p
+
+
+    def predict(self, X):
+        """
+        Test the classifier with a test dataset
+        data:
+        """
+        p = zip(self.clf.decision_function(X), self.clf.predict(X))
+        return p

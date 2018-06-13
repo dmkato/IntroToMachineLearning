@@ -19,6 +19,11 @@ class Knn:
         print('Test Accuracy:', (len(test_set) - test_err) / len(test_set))
         return preds
 
+    def predict(self, test_data):
+        test_set = normalize(test_data, self.norm_vect)
+        preds = [knn(self.train_set, test, self.optimal_k) for test in test_set]
+        return preds
+
 
 def get_data(type):
     with open('./knn_{}.csv'.format(type), 'r') as f:

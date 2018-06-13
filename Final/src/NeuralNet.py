@@ -18,9 +18,16 @@ class NeuralNet:
     def test(self, data):
         """
         Test the classifier with a test dataset
-        data:
         """
         X = [x[:-1] for x in data]
         y = [x[-1] for x in data]
+        p = [(p[int(y)], y) for p, y in zip(self.clf.predict_proba(X), self.clf.predict(X))]
+        return p
+
+
+    def predict(self, X):
+        """
+        Test the classifier with a test dataset
+        """
         p = [(p[int(y)], y) for p, y in zip(self.clf.predict_proba(X), self.clf.predict(X))]
         return p
