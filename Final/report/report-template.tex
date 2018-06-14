@@ -54,6 +54,16 @@ What are the final models that produced your submitted test predictions?\\
 \subsection{Parameter Tuning}
 What parameters did you tune for your models? How do you perform the parameter tuning?\\
 
+Over the various models used, we tuned different parameters.
+For each parameter we took a sampling of different values, and selected the one to use based off of performance.
+This performance was often the F1 value, as that was the final testing value anyway.
+For the Isolation Forest, we changed the contamination value, which had an effect on how many events it would predict.
+We raised this until we saw a similar output ratio as the other predictions.
+For the Neural Network, we changed the amount of interior nodes.
+Different values were attempted, but we settled on two layers of 200 nodes each.
+For KNN, we ran it until an optimal k value was found, based on the improvement rate of testing data.
+On the Support Vector Machine, we altered the C penalty value, the degree, and kernel type.
+Using a poly kernel, and second degree with a error penalty of 0.07 worked the best, after testing on various values.
 
 \subsection{Model selection}
 How did you decide which models to use to produce the final predictions?  Do you use cross-validation or hold-out for model selection? When you split the data for validation, is it fully random or special consideration went into forming the folds? What criterion is used to select the models?\\
