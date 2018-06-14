@@ -6,7 +6,7 @@
 %\usepackage[colorinlistoftodos]{todonotes}
 
 \title{CS434 Final Project Report}
-\author{Daniel Kato & Nathan Shepherd}
+\author{Daniel Kato \& Nathan Shepherd}
 \date{2018-06-13}
 
 \begin{document}
@@ -14,7 +14,8 @@
 \maketitle
 
 \section{Feature formulation and preprocessing}
-\subsection{Features} What are the features you feed to your learning algorithm? Did you simply flatten the 7 rows into a vector for features? Did you transform or aggregate the given data to engineer your own features?\\
+\subsection{Features}
+\textbf{What are the features you feed to your learning algorithm? Did you simply flatten the 7 rows into a vector for features? Did you transform or aggregate the given data to engineer your own features?}\\
 
 For all of the algorithms used we simply used the flattened 7 rows to predict the event.
 We used the features provided, and did not use any methods to increase the dimension of the features.
@@ -22,7 +23,7 @@ For both the K-Nearest Neighbor and the Isolation Forest algorithms, we normaliz
 % I'm not really sure what else we did, we didn't really change the incoming data to much, feature-wise.
 
 \subsection{Preprocessing}
-Did you pre-process your data in any way? This can be for the purpose of reducing dimension, or reducing noise, or balancing the class distribution. Be clear about what you exactly did. The criterion is to allow others to replicate your works.\\
+\textbf{Did you pre-process your data in any way? This can be for the purpose of reducing dimension, or reducing noise, or balancing the class distribution. Be clear about what you exactly did. The criterion is to allow others to replicate your works.}\\
 
 For preprocessing our data, we focused on the disparity of normal data to anomalous data.
 All of the algorithms use subsampling of the test data, to increase the rate of actual events.
@@ -36,23 +37,24 @@ It should be noted that our subsampling skips over any hypoglycemic events, beca
 
 \section{Learning algorithms}
 \subsection{Algorithms explored}
-Provide a list of learning algorithms that you explored for this project. For each algorithm, briefly justify your rationale for choosing this algorithm.\\
+\textbf{Provide a list of learning algorithms that you explored for this project. For each algorithm, briefly justify your rationale for choosing this algorithm.}\\
 % We didn't really explore any other algos? Maybe PCA,
 \begin{itemize}
   \item KNN: We used this algorithm on the basis that the hypoglycemic would form a cluster.
   This was used only on the general data.
   \item Isolation Forest: This algorithm was chosen because it can be used a small amount of features to find anomalous data.
   Because there are so many more normal events than hypoglycemic events, we thought that the hypoglycemic events could be found as anomalies, and predicted by how strong of an outlier they were.  We used it just for the individual data.
-  \item SVM:
-  \item Neural Net:
+  \item SVM: Because KNN has the potential to overfit to the training data, we thought an SVM may be able to make a more generalizable model.
+  \item Neural Net: We used a neural network because of it's ability to accurately classify higher dimensional data.
 \end{itemize}
 
 \subsection{Final models}
-What are the final models that produced your submitted test predictions?\\
+\textbf{What are the final models that produced your submitted test predictions?}\\
+We chose to use KNN, SVM, and Neural networks to classify the general data and Isolation Forest, SVM, and Neural networks to classify the individual data.
 
 \section{Parameter Tuning and Model Selection }
 \subsection{Parameter Tuning}
-What parameters did you tune for your models? How do you perform the parameter tuning?\\
+\textbf{What parameters did you tune for your models? How do you perform the parameter tuning?}\\
 
 Over the various models used, we tuned different parameters.
 For each parameter we took a sampling of different values, and selected the one to use based off of performance.
@@ -66,10 +68,12 @@ On the Support Vector Machine, we altered the C penalty value, the degree, and k
 Using a poly kernel, and second degree with a error penalty of 0.07 worked the best, after testing on various values.
 
 \subsection{Model selection}
-How did you decide which models to use to produce the final predictions?  Do you use cross-validation or hold-out for model selection? When you split the data for validation, is it fully random or special consideration went into forming the folds? What criterion is used to select the models?\\
+\textbf{How did you decide which models to use to produce the final predictions?  Do you use cross-validation or hold-out for model selection? When you split the data for validation, is it fully random or special consideration went into forming the folds? What criterion is used to select the models?}\\
 
+We used the leave-one-out cross-validation-error to test the accuracy of each KNN model and chose the k with the highest accuracy. With the neural network and support vector machine, we manually tested different combinations of hyper parameters until the accuracy of classifying the test set was highest. We split the data 90\%/10\% for the training/testing data. These were split the same way each time to allow us to test hyper parameters accurately although, randomizing the split could have provided us with a more robust model.
 
 \section{Results}
-Do you have any internal evaluation results you want to report?\\
+\textbf{Do you have any internal evaluation results you want to report?}\\
+The model with the highest results on the testing data was the neural network with a precision of 0.529, a recall of 0.9, a F1 of 0.666, and an AUC of 0.295. These results were obtained using the neural network with 3 hidden layers with sizes 200, 200, and 10 on the general data.
 
 \end{document}
